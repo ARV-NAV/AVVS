@@ -6,24 +6,18 @@
 # ================ Built-in Imports ================ #
 
 from time import time
-
+import os
 
 # ================ Third Party Imports ================ #
 
 import matlab.engine as m_engine
-import pprint
 import numpy as np
+from config import ROOT_DIR
 
 # ================ Authorship ================ #
 
 __author__ = "Chris Patenaude"
 __contributors__ = ["Chris Patenaude", "Gabriel Michael", "Gregory Sanchez"]
-
-# ================ Global Variables ================ #
-
-pp = pprint.PrettyPrinter(indent = 2)
-timestamped_file = "IMU_timestamped_test_data.bin"
-
 
 # ================ Class defenition ================ #
 class Imu:
@@ -35,6 +29,7 @@ class Imu:
         print("Initilizing IMU...")
         self.eng = m_engine.start_matlab()
         print("Initilization Complete. Time elapsed: {0}s".format(time() - start_time) )
+        self.eng.addpath(os.path.join(ROOT_DIR, '3rd_party_scripts'))
 
     def get_last_orientation(self) -> dict:
         """Get Last Orientation
@@ -99,13 +94,3 @@ class Imu:
                 return valid_data
             else:
                 i+=1
-
-
-
-if __name__ == "__main__":
-    imu = Imu(timestamped_file)
-
-    data = imu.get_last_orientation()
-    valid = imu.get_last_valid_orientation(data)
-
-    pp.pprint(valid)
