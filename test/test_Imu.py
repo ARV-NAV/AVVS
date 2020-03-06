@@ -7,8 +7,9 @@ from numpy.testing import assert_allclose
 
 class Test_IMU(unittest.TestCase):
 
-    def setUp(self):
-        self.imu = Imu(IMU_MOCK_PATH)
+    @classmethod
+    def setUpClass(cls):
+        cls.imu = Imu(IMU_MOCK_PATH)
 
     def test_get_last_orientation(self):
         data = self.imu.get_last_orientation()
