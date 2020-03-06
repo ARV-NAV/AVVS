@@ -56,21 +56,21 @@ def get_transformation_matrix(orientation: dict, img_szie: Tuple[float, float]) 
     ], dtype=float)
 
     # Rotation matrices around the X, Y, and Z axis
-    r_x = array([
+    rx = array([
         [1,     0,          0,          0],
         [0,     cos(roll),  -sin(roll), 0],
         [0,     sin(roll),  -cos(roll), 0],
         [0,     0,          0,          1]
     ], dtype=float)
 
-    r_y = array([
+    ry = array([
         [cos(pitch),    0, sin(pitch),  0],
         [0,             1, 0,           0],
         [-sin(pitch),   0, cos(pitch),  0],
         [0,             0, 0,           1]
     ], dtype=float)
 
-    r_z = array([
+    rz = array([
         [cos(yaw), -sin(yaw), 0, 0],
         [sin(yaw),  cos(yaw), 0, 0],
         [0,         0,        1, 0],
@@ -86,8 +86,8 @@ def get_transformation_matrix(orientation: dict, img_szie: Tuple[float, float]) 
     ], dtype=float)
 
     # Compose rotation matrix with RX, RY, RZ (RZ * RY * RX)
-    # r = matmul(matmul(r_z, r_y), r_x)
-    r = matmul(matmul(r_z, r_x), r_y)
+    # r = matmul(matmul(rz, ry), rx)
+    r = matmul(matmul(rz, rx), ry)
 
     # Final transformation matrix (A2 * (T * (R * A1))
     h = matmul(a2, matmul(t, matmul(r, a1)))
