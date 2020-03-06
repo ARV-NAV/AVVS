@@ -5,14 +5,13 @@ to then pass to object detection algorithms
 """
 # ================ Built-in Imports ================
 
-from sys import stderr
 from math import cos, sin
 from typing import Tuple
 
 # ================ Third Party Imports ================
 
 from numpy import ndarray, matmul, array
-from cv2 import imread, getRotationMatrix2D, warpAffine, warpPerspective, INTER_LANCZOS4
+from cv2 import imread, warpPerspective, INTER_LANCZOS4
 
 # ================ Authorship ================
 
@@ -110,11 +109,6 @@ def rotate_image(img_path: str, orientation: dict) -> ndarray:
     t = get_transformation_matrix(orientation, (rows/2, cols/2))
     dst = warpPerspective(img, t, (rows, cols), flags=INTER_LANCZOS4)
 
-    # Basic Transformation of roll.
-    # roll = orientation["roll"]
-    # rot_matrix = getRotationMatrix2D((cols/2, rows/2), roll, 1)
-    # dst = warpAffine(img, rot_matrix, (cols, rows))
-
     return dst
 
 
@@ -127,14 +121,10 @@ if __name__ == "__main__":
         "roll": 1.0472,  # 60 degrees
     }
 
-    # test_data = {
-    #     "pitch": 0,
-    #     "yaw": 0,
-    #     "roll": 30
-    # }
-
     # The following image was captured with a Samsung Galaxy S8
     # new_img = rotate_image('./images/img_30_2.jpg', test_data)
+
+    # The following image was captured with a Logitech c920 Camera
     new_img = rotate_image('./logitech_camera/data/frame129.jpg', test_data)
 
     imwrite("saved_img.jpg", new_img)
