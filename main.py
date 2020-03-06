@@ -7,7 +7,7 @@ import argparse
 import os
 
 # ================ Third Party Imports ================ #
-from orientation_sensor.Imu import Imu
+from classes.Imu import Imu
 
 # ================ Authorship ================ #
 
