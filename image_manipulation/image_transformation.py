@@ -11,7 +11,7 @@ from typing import Tuple
 
 # ================ Third Party Imports ================
 
-from numpy import ndarray, matmul
+from numpy import ndarray, matmul, array
 from cv2 import imread, getRotationMatrix2D, warpAffine, warpPerspective, INTER_LANCZOS4
 
 # ================ Authorship ================
@@ -26,62 +26,69 @@ def get_transformation_matrix(orientation: dict, img_szie: Tuple[float, float]) 
     off the orientation data.
     This was taken from https://stackoverflow.com/a/37279632
     """
-    roll = orientation["roll"]
-    pitch = orientation["pitch"]
-    yaw = orientation["yaw"]
+    roll = orientation["pitch"]
+    pitch = orientation["yaw"]
+    yaw = orientation["roll"]
     dx, dy, dz = 0, 0, 1
 
-    f = 1  # focal length expressed in pixel units (TODO: Figure out)
+    cx, cy = img_szie  # principal point that is usually at the image center
 
-    cx, cy = img_szie  # principal point that is usually at the image center (TODO: Figure out)
+    focal_mm = 3.67  # This is specific for a Logitech c920 Camera (TODO: make sure this is correct)
+    sensor_width_mm = 4.8  # This is specific for a Logitech c920 Camera
+
+    # focal_mm = 26  # This is specific for a Samsung Galaxy S8 Rear Camera
+    # sensor_width_mm = 7.06  # This is specific for a Samsung Galaxy S8 Rear Camera
+
+    f = (focal_mm / sensor_width_mm) * (cx * 2)  # focal length expressed in pixel units
 
     # Camera Calibration Intrinsics Matrix
-    a2 = [
+    a2 = array([
         [f, 0, cx, 0],
         [0, f, cy, 0],
         [0, 0, 1,  0]
-    ]
+    ], dtype=float)
 
     # Inverted Camera Calibration Intrinsics Matrix
-    a1 = [
+    a1 = array([
         [1/f,   0,   -cx/f],
         [0,     1/f, -cy/f],
         [0,     0,   0],
         [0,     0,   1]
-    ]
+    ], dtype=float)
 
     # Rotation matrices around the X, Y, and Z axis
-    r_x = [
+    r_x = array([
         [1,     0,          0,          0],
         [0,     cos(roll),  -sin(roll), 0],
         [0,     sin(roll),  -cos(roll), 0],
         [0,     0,          0,          1]
-    ]
+    ], dtype=float)
 
-    r_y = [
+    r_y = array([
         [cos(pitch),    0, sin(pitch),  0],
         [0,             1, 0,           0],
         [-sin(pitch),   0, cos(pitch),  0],
         [0,             0, 0,           1]
-    ]
+    ], dtype=float)
 
-    r_z = [
+    r_z = array([
         [cos(yaw), -sin(yaw), 0, 0],
         [sin(yaw),  cos(yaw), 0, 0],
         [0,         0,        1, 0],
         [0,         0,        0, 1]
-    ]
+    ], dtype=float)
 
     # Translation matrix
-    t = [
+    t = array([
         [1, 0, 0, dx],
         [0, 1, 0, dy],
         [0, 0, 1, dz],
         [0, 0, 0, 1]
-    ]
+    ], dtype=float)
 
     # Compose rotation matrix with RX, RY, RZ (RZ * RY * RX)
-    r = matmul(matmul(r_z, r_y), r_x)
+    # r = matmul(matmul(r_z, r_y), r_x)
+    r = matmul(matmul(r_z, r_x), r_y)
 
     # Final transformation matrix (A2 * (T * (R * A1))
     h = matmul(a2, matmul(t, matmul(r, a1)))
@@ -98,34 +105,39 @@ def rotate_image(img_path: str, orientation: dict) -> ndarray:
     @return: numpy array with the (un)altered image
     """
     img = imread(img_path, 0)
-    rows, cols = img.shape
+    cols, rows = img.shape
 
     t = get_transformation_matrix(orientation, (rows/2, cols/2))
-    # import pdb; pdb.set_trace()
-    print(t)
     dst = warpPerspective(img, t, (rows, cols), flags=INTER_LANCZOS4)
 
-    # try:
-    #     roll = orientation["roll"]
-    #     rot_matrix = getRotationMatrix2D((cols/2, rows/2), roll, 1)
-    #     dst = warpAffine(img, rot_matrix, (cols, rows))
-    # except KeyError as err:
-    #     print("Key Error: unknown key {0}".format(err), file=stderr)
-    #     dst = img
+    # Basic Transformation of roll.
+    # roll = orientation["roll"]
+    # rot_matrix = getRotationMatrix2D((cols/2, rows/2), roll, 1)
+    # dst = warpAffine(img, rot_matrix, (cols, rows))
 
     return dst
 
 
 if __name__ == "__main__":
-    from cv2 import imshow, waitKey, destroyAllWindows
+    from cv2 import imshow, waitKey, destroyAllWindows, imwrite
 
     test_data = {
-        "pitch": 0.03037297911942005,
-        "yaw": 0.03037297911942005,
-        "roll": 0.03037297911942005
+        "pitch": 0,
+        "yaw": 0,
+        "roll": 1.0472,  # 60 degrees
     }
 
-    new_img = rotate_image('./images/img_downscale_30.jpg', test_data)
+    # test_data = {
+    #     "pitch": 0,
+    #     "yaw": 0,
+    #     "roll": 30
+    # }
+
+    # The following image was captured with a Samsung Galaxy S8
+    # new_img = rotate_image('./images/img_30_2.jpg', test_data)
+    new_img = rotate_image('./logitech_camera/data/frame129.jpg', test_data)
+
+    imwrite("saved_img.jpg", new_img)
 
     imshow('img', new_img)
     waitKey(0)
