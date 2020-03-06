@@ -154,9 +154,7 @@ function imu = parse_imu(dat_or_file,varargin)
             progress.Message = sprintf('IMU: Opening %s%s [%d of %d]',fname,fext,i,length(files));
             progress.Value = i/length(files);
             fd = fopen(files{i},'r','ieee-le');
-            % Chris's test code
             fseek(fd, -1000,'eof');
-            % End of chris's test code
             dat = cat(1,dat,uint8(fread(fd,inf,'uint8')));
             fclose(fd);
         end
