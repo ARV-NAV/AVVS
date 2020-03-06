@@ -33,9 +33,8 @@ if __name__ == "__main__":
     # If test flag set
     if (args['t']):
         imu = Imu("./test/mocks/IMU_timestamped_test_data.bin")
-        data = imu.get_last_orientation()
-        valid = imu.get_last_valid_orientation(data)
-        print("\nIMU Test Resultes:")
+        valid = imu.get_last_valid_orientation()
+        print("IMU Test Resultes:")
         print(valid)
     else: 
         imu = Imu(args['imu'])

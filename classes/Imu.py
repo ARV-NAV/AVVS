@@ -83,11 +83,15 @@ class Imu:
         return test_dict
 
 
-    def get_last_valid_orientation(self, orientation_data: dict) -> dict:
+    def get_last_valid_orientation(self) -> dict:
+        
         """Get Last Valid Orientation
         Gets the last valid set of orientation data from the orientation dictionary
         @return: dict: data containing the last valid orientations data
         """
+
+        orientation_data = self.get_last_orientation();
+
         i = 0
         while (i < 10):
             if(orientation_data['valid_heading'][0][9 - i] == 1 and orientation_data['valid_orientation'][0][9 - i] == 1):
