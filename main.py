@@ -1,7 +1,6 @@
 """ Description of the main entry point
 """
 
-
 # ================ Built-in Imports ================ #
 
 import os
@@ -26,14 +25,18 @@ __contributors__ = ["Chris Patenaude", "Gabriel Michael", "Gregory Sanchez", "Do
 
 # ================ Functions ================ #
 
+def getArgs():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--env", help="Set enviroment: 'prod', 'test', or 'dev' (default)")
+    return vars(ap.parse_args())
+
+
 # ================ Main ================ #
 
 if __name__ == "__main__":
     
     # Parse Command Line Arguments
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--env", help="Set enviroment: 'prod', 'test', or 'dev' (default)")
-    args = vars(ap.parse_args())
+    args = getArgs();
 
     # get configuration
     config = enviroment.getEnv(args['env'])
