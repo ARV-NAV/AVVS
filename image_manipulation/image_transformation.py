@@ -25,9 +25,9 @@ def get_transformation_matrix(orientation: dict, img_szie: Tuple[float, float]) 
     off the orientation data.
     This was taken from https://stackoverflow.com/a/37279632
     """
-    roll = orientation["pitch"]
-    pitch = orientation["yaw"]
-    yaw = orientation["roll"]
+    roll = orientation["pitch"].item(0)
+    pitch = orientation["yaw"].item(0)
+    yaw = orientation["roll"].item(0)
     dx, dy, dz = 0, 0, 1
 
     cx, cy = img_szie  # principal point that is usually at the image center
@@ -95,7 +95,7 @@ def get_transformation_matrix(orientation: dict, img_szie: Tuple[float, float]) 
     return h
 
 
-def rotate_image(img_path: str, orientation: dict) -> ndarray:
+def rotate_image(img: ndarray, orientation: dict) -> ndarray:
     """Rotate Image
 
     @param: img_path (str): path to the image to rotate
@@ -103,7 +103,7 @@ def rotate_image(img_path: str, orientation: dict) -> ndarray:
 
     @return: numpy array with the (un)altered image
     """
-    img = imread(img_path, 0)
+    # img = imread(img_path, 0)
     cols, rows = img.shape
 
     t = get_transformation_matrix(orientation, (rows/2, cols/2))
