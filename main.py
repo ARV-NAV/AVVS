@@ -15,6 +15,7 @@ import cv2 as cv
 
 from classes.Imu import Imu
 from image_manipulation import image_transformation
+import enviroment
 
 # ================ Authorship ================ #
 
@@ -31,17 +32,33 @@ if __name__ == "__main__":
     
     # Parse Command Line Arguments
     ap = argparse.ArgumentParser()
-    ap.add_argument("--imu", required=True,
-                    help="path to imu data file")
-    ap.add_argument("-t", action="store_true",
-                    help="run tests if set")
+    ap.add_argument("--env", help="Set enviroment: 'prod', 'test', or 'dev' (default)")
     args = vars(ap.parse_args())
 
-    # If test flag set
-    if args['t']:
-        imu = Imu("./test/mocks/IMU_timestamped_test_data.bin")
-        valid = imu.get_last_valid_orientation()
-        print("IMU Test Resultes:")
-        print(valid)
-    else: 
-        imu = Imu(args['imu'])
+    # get configuration
+    config = enviroment.getEnv(args['env'])
+
+    # Component initilization
+    imu = Imu(config.IMU_PATH)
+
+    while True:
+        # get image
+        
+        # get attitude if valid image
+        attitude = imu.get_last_valid_orientation()
+
+        # Transform image
+
+        # detect and classify object
+
+        # track objects
+
+        # calculate pos
+
+        # output pos
+
+
+        
+
+
+
