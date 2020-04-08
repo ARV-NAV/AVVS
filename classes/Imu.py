@@ -12,7 +12,7 @@ import os
 
 import matlab.engine as m_engine
 import numpy as np
-from config import ROOT_DIR
+from enviroment import DefaultEnv
 
 # ================ Authorship ================ #
 
@@ -29,7 +29,7 @@ class Imu:
         print("Initilizing IMU...")
         self.eng = m_engine.start_matlab()
         print("Initilization Complete. Time elapsed: {0}s".format(time() - start_time) )
-        self.eng.addpath(os.path.join(ROOT_DIR, '3rd_party_scripts'))
+        self.eng.addpath(os.path.join(DefaultEnv.ROOT_DIR, '3rd_party_scripts'))
 
     def get_last_orientation(self) -> dict:
         """Get Last Orientation
