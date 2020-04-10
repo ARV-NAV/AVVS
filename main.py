@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
     while True:
         # Press Q on keyboard to  exit
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        if cv.waitKey(1) & 0xFF == ord('q'):
             break
 
         # get image
@@ -82,7 +82,7 @@ if __name__ == "__main__":
         if (config.DRAW_TO_SCREEN):
             # Draw the objects being tracked
             tracker.drawObjects(transformed_image)
-            cv2.imshow('Tracked Objects', transformed_image)
+            cv.imshow('Tracked Objects', transformed_image)
 
         # calculate pos
 
@@ -91,4 +91,4 @@ if __name__ == "__main__":
     # Clean up
     cap.release()
     out.release()
-    cv2.destroyAllWindows()
+    cv.destroyAllWindows()
