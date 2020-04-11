@@ -37,7 +37,7 @@ pip3 install opencv-python
 
 6) Create a login name and click 'Next' *(Note: this name is so Mathworks can Identify specific devices currently logged in)*
 
-7) Select an installation destination folder and click next *(Note: if you select an instalation folder other then the default, you may need to add the new location to you PATH variable)*
+7) Select an installation destination folder and click next *(Note: if you select an instalation folder other then the default, you may need to add the new location to your PATH variable)*
 
 8) Ensure the following four products are selected, then click 'Next'
 
