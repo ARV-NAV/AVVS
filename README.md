@@ -1,6 +1,6 @@
-# AVVS: Obstical avoidence system for the ROSS USV
+# AVVS: Autonomus Vessle Vission System
 
-Foobar is a Python library for dealing with word pluralization.
+AVVS is a computer vision system developed for the ROSS (Robotic Oceanagraphic Surface Sampler). The AVVS collects visual data from the enviroment via a waterproofed front facing camera then detects and catagorizes obsticals providing feedback to the navigation system.
 
 ## Installation
 
