@@ -18,7 +18,7 @@ pip3 install opencv-python
 
 #### Install Matlab:
 
-*(Note: you muse have a active Matlab licence and accout)*
+*(Note: you must have an active Matlab license and account)*
 
 1) Download matlab runtime R2020a from [Mathworks](https://www.mathworks.com/products/compiler/matlab-runtime.html)
 
@@ -31,13 +31,13 @@ pip3 install opencv-python
     ```
 3) Sign in using you matlab account username, and password
 
-4) Accept the MathWorks Licenseing Agreement and click 'Next'
+4) Accept the MathWorks Licensing Agreement and click 'Next'
 
 5) Select your active license and click 'Next'
 
 6) Create a login name and click 'Next' *(Note: this name is so Mathworks can Identify specific devices currently logged in)*
 
-7) Select an installation destination folder and click next *(Note: if you select an instalation folder other then the default, you may need to add the new location to your PATH variable)*
+7) Select an installation destination folder and click next *(Note: if you select an installation folder other then the default, you may need to add the new location to your PATH variable)*
 
 8) Ensure the following four products are selected, then click 'Next'
 
