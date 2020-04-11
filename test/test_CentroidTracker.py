@@ -10,7 +10,6 @@ class Test_CentroidTracker(unittest.TestCase):
 
     def test_register_deregister(self):
         tracker = CentroidTracker()
-        print(tracker.nextObjectID)
         self.assertEqual(len(tracker.objects), tracker.nextObjectID)
 
         testCentroid = (0,0)
