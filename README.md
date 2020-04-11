@@ -50,6 +50,15 @@ Install Matlab:
 
 10) Click 'Begin Installation'
 
+Install Matlab Engine for Python:
+
+1) Navigate to your MATLAB root folder *(Note: generally, '/usr/local/MATLAB/R2020a' if you used the default location)*
+
+2) Enter the following command to install engine
+
+    ```bash
+    sudo python extern/engines/python/setup.py install
+    ```
 
 
 ## Usage
