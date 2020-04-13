@@ -31,3 +31,34 @@ class Test_CentroidTracker(unittest.TestCase):
             self.assertEqual(tracker.nextObjectID, numObjects)
 
         self.assertFalse(any(tracker.objects))
+
+    def test_update(self):
+        # initialize tracker where object can dissapear for at most 1 frame
+        tracker = CentroidTracker(maxDisappeared=1)
+
+        # initialize list of new objects to track
+        objsToAdd = []
+        for i in range(0,10):
+            objsToAdd.append((i, i, i+1, i+1, None))
+
+        # update empty CentroidTracker
+        tracker.update(objsToAdd)
+
+        # Assert all objects were added to empty tracker
+        self.assertEqual(len(tracker.objects), len(objsToAdd))
+        self.assertEqual(len(tracker.objectData), len(objsToAdd))
+
+        # Update with an empty list
+        tracker.update([])
+
+        # Assert the disappeared count is 1 for all objects
+        for i in range(len(objsToAdd)):
+            self.assertEqual(tracker.disappeared[i], 1)
+
+        # Update with empty list again
+        tracker.update([])
+
+        # Assert all objects removed from tracker (since max disappeared exceeded)
+        self.assertEqual(len(tracker.objects), 0)
+        self.assertEqual(len(tracker.objectData), 0)
+        self.assertEqual(len(tracker.disappeared), 0)
