@@ -20,7 +20,7 @@ pip3 install opencv-python
 
 *(Note: you muse have a active Matlab licence and accout)*
 
-1) Download matlab runtime R2020a from [Mathworks](https://www.mathworks.com/products/compiler/matlab-runtime.html)
+1) Download matlab runtime R2020a or R2019b from [Mathworks](https://www.mathworks.com/products/compiler/matlab-runtime.html)
 
 2) Unzip the runtime package and install
 
@@ -60,16 +60,16 @@ pip3 install opencv-python
     sudo python extern/engines/python/setup.py install
     ```
 
+## Configuration
+
+1) Open config.py in the project root directory with your chosen editor
+
+2) Comment out the IMU_PATH variable that points 'IMU_timestamped_test_data.bin' and un-comment the line ``` IMU_PATH="path to raw data file"```, replacing ```"path to raw data file"``` with the absolute path to the live IMU data file.
+
+3) Replace the value of CAPTURE_DEVICE with the divece id of the camera used for collecting visual data. >>>TODO: give some background on how to detect your device
 
 ## Usage
-
-```python
-import foobar
-
-foobar.pluralize('word') # returns 'words'
-foobar.pluralize('goose') # returns 'geese'
-foobar.singularize('phenomena') # returns 'phenomenon'
-```
+Starting the AVVS will begin reading the data file pointed to by IMU_PATH config variable. 
 
 ## Testing
 - Run all Tests command: ```python -m unittest```
