@@ -1,27 +1,31 @@
-# Starting code by Jean Vitor, available at https://jeanvitor.com/tensorflow-object-detecion-opencv/
-import cv2
-import numpy as np
-from centroidtracker import CentroidTracker
-from objData import objData
+""" Script to do object detection with deep neural network.
+    The DNN is loaded, and colors and labels are defined before
+    an infinite loop runs to detect objects in a video feed input.
+"""
+# ================ Built-in Imports ================ #
+
 import datetime
 
-# To stream images from a camera, use:
-# cap = cv2.VideoCapture(**camera number**)
-# To test, I recomend using a video from the Singapore Maritime dataset.
-# Files are too large for github, so must be downloaded independently.
-#cap = cv2.VideoCapture("testvid.mp4")
-cap = cv2.VideoCapture("MVI_0797_VIS_OB.avi")
+# ================ Third Party Imports ================ #
 
-# Set up video writer
-# Define the codec and create VideoWriter object
-fourcc = cv2.VideoWriter_fourcc(*'XVID')
-out = cv2.VideoWriter('output.avi',fourcc, 20.0, (1200,675))
+import cv2
+import numpy as np
+from object_detection.CentroidTracker import CentroidTracker
+from object_detection.ObjData import ObjData
+
+# ================ Authorship ================ #
+
+__author__ = "Donald Max Harkins"
+__contributors__ = ["Donald Max Harkins"]
+
+# ================ Initialization ================ #
 
 
 # Load a model imported from Tensorflow
 tensorflowNet = cv2.dnn.readNetFromTensorflow(
-        'ssd_inception_v2_smd_2019_01_29/frozen_inference_graph.pb'
-        , 'ssd_inception_v2_smd_2019_01_29/graph.pbtxt')
+        'object_detection/ssd_inception_v2_smd_2019_01_29/frozen_inference_graph.pb'
+        , 'object_detection/ssd_inception_v2_smd_2019_01_29/graph.pbtxt')
+
 
 # Set up a list of class labels. There's a tensorflow method,
 # but in this case I'm just creating a list since there's only
@@ -40,8 +44,16 @@ LABELS = ['Ferry',
           '????',
           'dock?']
 
+
+# initialize a list of colors to represent each possible class label
+np.random.seed(37)
+COLORS = np.random.randint(0, 255, size=(len(LABELS), 3),
+	dtype="uint8")
+
+# ================ Function Definitions ================ #
+
 # Define function to process Tensorflow network output
-def processDnnOutput(networkOutput, rows, cols):
+def process_DNN_output(networkOutput, rows, cols):
     # Loop on the outputs
     rects = []
     for detection in networkOutput[0,0]:
@@ -54,7 +66,7 @@ def processDnnOutput(networkOutput, rows, cols):
             top = int(detection[4] * rows)
             right = int(detection[5] * cols)
             bottom = int(detection[6] * rows)
-            data = objData((left, bottom, right, top),
+            data = ObjData((left, bottom, right, top),
                            datetime.datetime.now().strftime("%H:%M:%S.%f"),
                            LABELS[objID],
                            detection[2],
@@ -65,25 +77,14 @@ def processDnnOutput(networkOutput, rows, cols):
     return rects
 
 
-# initialize a list of colors to represent each possible class label
-np.random.seed(37)
-COLORS = np.random.randint(0, 255, size=(len(LABELS), 3),
-	dtype="uint8")
+def detect_in_image(img, ct):
+    """Detect and track objects in image
 
-# Initialize centroid tracker. Needed to match objects between frames.
-ct = CentroidTracker()
+    @param: img (np array): 3D array representing pixels in image
+    @param: cd (CentroidTracker): tracker to persistently track found objects
 
-# This is the main loop that processes frames from video cameras
-# or input video.
-while(True):
-    # Input image
-    ret, img = cap.read()
-    if not ret:
-        break
-
+    """
     h, w = img.shape[:2]
-    # Scale image to reduce size for display later
-    img = cv2.resize(img,(1200, int((h/w)*1200)))
 
     # Use the given image as input, which needs to be blob(s).
     # Originally, parameters for blob were
@@ -98,25 +99,7 @@ while(True):
 
     # Get list of objects from tensorflow network output
     rows, cols = img.shape[:2]
-    rects = processDnnOutput(networkOutput, rows, cols)
+    rects = process_DNN_output(networkOutput, rows, cols)
 
     # Now, update the centroid tracker with the newly found bounding boxes
     (objects, data) = ct.update(rects)
-
-    # Draw the objects being tracked
-    ct.drawObjects(img)
-
-    # Show the image with rectagles surrounding the detected objects
-    cv2.imshow('Image', img)
-
-    # Write img to video
-    out.write(img)
-
-    # Press Q on keyboard to  exit
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-      break
-
-# Clean up
-cap.release()
-out.release()
-cv2.destroyAllWindows()

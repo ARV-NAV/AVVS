@@ -10,13 +10,13 @@ Blah, blah, blah!!!
 
 ### Linux
 
-Install OpenCV:
+#### Install OpenCV:
 
 ```bash
 pip3 install opencv-python
 ```
 
-Install Matlab:
+#### Install Matlab:
 
 *(Note: you muse have a active Matlab licence and accout)*
 
@@ -50,6 +50,15 @@ Install Matlab:
 
 10) Click 'Begin Installation'
 
+#### Install Matlab Engine for Python:
+
+1) Navigate to your MATLAB root folder *(Note: generally, '/usr/local/MATLAB/R2020a' if you used the default location)*
+
+2) Enter the following command to install engine
+
+    ```bash
+    sudo python extern/engines/python/setup.py install
+    ```
 
 
 ## Usage
