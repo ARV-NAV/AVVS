@@ -1,8 +1,24 @@
+""" Script to do object detection with deep neural network.
+    The DNN is loaded, and colors and labels are defined before
+    an infinite loop runs to detect objects in a video feed input.
+"""
+# ================ Built-in Imports ================ #
+
+import datetime
+
+# ================ Third Party Imports ================ #
+
 import cv2
 import numpy as np
 from object_detection.CentroidTracker import CentroidTracker
 from object_detection.ObjData import ObjData
-import datetime
+
+# ================ Authorship ================ #
+
+__author__ = "Donald Max Harkins"
+__contributors__ = ["Donald Max Harkins"]
+
+# ================ Initialization ================ #
 
 
 # Load a model imported from Tensorflow
@@ -34,6 +50,7 @@ np.random.seed(37)
 COLORS = np.random.randint(0, 255, size=(len(LABELS), 3),
 	dtype="uint8")
 
+# ================ Function Definitions ================ #
 
 # Define function to process Tensorflow network output
 def process_DNN_output(networkOutput, rows, cols):

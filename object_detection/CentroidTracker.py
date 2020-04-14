@@ -1,12 +1,24 @@
-# Centroid tracker based on code by Adrian Rosebrock (Avaliable:  https://www.pyimagesearch.com/2018/07/23/simple-object-tracking-with-opencv/)
+""" Centroid tracker based on code by Adrian Rosebrock
+    (Avaliable:  https://www.pyimagesearch.com/2018/07/23/simple-object-tracking-with-opencv/)
+    * Takes a list of rectangles at each time step, and
+    matches them by dynamically minimizing the euclidian
+    distance between center points from one frame to another.
+    * Also stores information about each detected object over
+    time by keeping a dictionary of lists of data objects.
+    * Contains a draw method which displays all objects
+    being tracked on an image.
+"""
 
-# import the necessary packages
-from scipy.spatial import distance as dist
+# ================ Built-in Imports ================ #
 from collections import OrderedDict
+
+# ================ Third Party Imports ================ #
+from scipy.spatial import distance as dist
 import numpy as np
 import cv2 as cv2
 
 
+# ================ Class defenition ================ #
 class CentroidTracker():
     def __init__(self, maxDisappeared=5):
         # initialize the next unique object ID along with two ordered
@@ -71,7 +83,7 @@ class CentroidTracker():
             # return early as there are no centroids or tracking info
             # to update
             return (self.objects, self.objectData)
-            
+
         # initialize an array of input centroids for the current frame
         inputCentroids = np.zeros((len(newObjs), 2), dtype="int")
         inputData = []
