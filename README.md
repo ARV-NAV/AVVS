@@ -66,13 +66,31 @@ pip3 install opencv-python
 
 2) Comment out the IMU_PATH variable that points 'IMU_timestamped_test_data.bin' and un-comment the line ``` IMU_PATH="path to raw data file"```, replacing ```"path to raw data file"``` with the absolute path to the live IMU data file.
 
-3) Replace the value of CAPTURE_DEVICE with the divece id of the camera used for collecting visual data. >>>TODO: give some background on how to detect your device
+3) Replace the value of CAPTURE_DEVICE with the divece id of the camera used for collecting visual data. Use the command 'lsusb' from the terminal to discover your webcam's id which you can enter into the CAPTURE_DEVICE variable.
+```bash
+# example
+lsusb
+
+# output ...
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 001 Device 004: ID 138a:0097 Validity Sensors, Inc. 
+Bus 001 Device 003: ID 04ca:7067 Lite-On Technology Corp. Integrated Camera
+Bus 001 Device 002: ID 8087:0a2b Intel Corp. 
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+
+```
 
 ## Usage
-Starting the AVVS will begin reading the data file pointed to by IMU_PATH config variable. 
+Starting the AVVS will begin reading the data file pointed to by IMU_PATH config variable and output positional data on detected objects to stdout. If the DRAW_TO_SCREEN configuration variable is set, a processed image will be generated containing a orientation corrected view port with bounding boxes around detected objects.
+
+```bash 
+# Run the AVVS 
+python main.py
+
+# Run the AVVS output to a file
+python main.py > file.txt
+
+```
 
 ## Testing
 - Run all Tests command: ```python -m unittest```
-
-## License
-TODO
