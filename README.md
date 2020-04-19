@@ -18,7 +18,7 @@ pip3 install opencv-python
 
 #### Install Matlab:
 
-*(Note: you must have an active Matlab license and account)*
+*(Note: you must have an active Matlab license and account: [Student account activation.](https://is.oregonstate.edu/service/software/matlab))*
 
 1) Download matlab runtime R2020a or R2019b from [Mathworks](https://www.mathworks.com/products/compiler/matlab-runtime.html)
 
