@@ -9,6 +9,7 @@ import argparse
 # ================ Third Party Imports ================ #
 
 import cv2 as cv
+from time import sleep
 
 # ================ User Imports ================ #
 
@@ -104,6 +105,9 @@ if __name__ == "__main__":
 
         # output pos
         print(output)
+
+        # Sleep for 1 sec
+        sleep(1)
 
     # Clean up
     cap.release()
