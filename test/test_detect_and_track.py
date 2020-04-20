@@ -10,8 +10,9 @@ class Test_detect_and_track(unittest.TestCase):
     def setUpClass(cls):
         cls.tracker = ct.CentroidTracker()
 
-    # Test that boat can be detected in image
+    # Test that boats can be detected in the image
     def test_detect_in_image(self):
         img = cv.imread("test/mocks/boats_snapshot.png", 1)
         cv.imshow('test',img)
-        self.assertEqual(detect_and_track.detect_in_image(img, self.tracker), 1)
+        # Assert 5 boats found
+        self.assertEqual(detect_and_track.detect_in_image(img, self.tracker), 5)

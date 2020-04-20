@@ -102,3 +102,5 @@ def detect_in_image(img, ct):
 
     # Now, update the centroid tracker with the newly found bounding boxes
     (objects, data) = ct.update(rects)
+
+    return len(rects)
