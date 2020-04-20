@@ -10,19 +10,16 @@ import datetime
 
 import cv2
 import numpy as np
-from object_detection.CentroidTracker import CentroidTracker
-from object_detection.ObjData import ObjData
+from object_detection import CentroidTracker
+from object_detection import ObjData
 
 # ================ Authorship ================ #
 
 __author__ = "Donald Max Harkins"
 __contributors__ = ["Donald Max Harkins"]
 
-# ================ Initialization ================ #
-from object_detection import CentroidTracker
-from object_detection import ObjData
-import datetime
 
+# ================ Initialization ================ #
 
 # Load a model imported from Tensorflow
 tensorflowNet = cv2.dnn.readNetFromTensorflow(
