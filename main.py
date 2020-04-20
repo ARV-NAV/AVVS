@@ -12,7 +12,7 @@ import cv2 as cv
 
 # ================ User Imports ================ #
 
-import enviroment
+import config
 from classes.Imu import Imu
 from image_manipulation import image_transformation
 from object_detection import detect_and_track
@@ -40,9 +40,6 @@ if __name__ == "__main__":
 
     # Parse Command Line Arguments
     args = getArgs()
-
-    # get configuration
-    config = enviroment.getEnv(args['env'])
 
     # Component initilization
     imu = Imu(config.IMU_PATH)
