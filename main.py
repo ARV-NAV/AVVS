@@ -86,11 +86,11 @@ if __name__ == "__main__":
 
         # calculate pos
         output = []
+        viewport_width = 0    # image x dimension px
+        viewport_height = 0   # image y dimension px
+        viewport_angle = config. # image diagnal px
         for obj in tracker.objects:
 
-            viewport_width = 0    # image x dimension px
-            viewport_height = 0   # image y dimension px
-            viewport_angle = 0    # image diagnal px
             object_xpos = 0       # horizontal center of bounding box
 
             compass_angle = calculate_angle(

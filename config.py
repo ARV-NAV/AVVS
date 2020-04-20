@@ -13,7 +13,7 @@ IMU_PATH=os.path.join(ROOT_DIR, 'test/mocks/IMU_timestamped_test_data.bin')
 CAPTURE_DEVICE = 'MVI_1610_VIS_cut.avi'
 
 # Device's viewport angle in degrees
-VIEWPORT_ANGLE = 60;
+VIEWPORT_ANGLE = 43.3
 
 # Output detected objects and bounding boxes
 DRAW_TO_SCREEN = True
