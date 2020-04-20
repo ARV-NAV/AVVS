@@ -20,7 +20,7 @@ import cv2 as cv2
 
 # ================ Class defenition ================ #
 class CentroidTracker():
-    def __init__(self, maxDisappeared=5):
+    def __init__(self, maxDisappeared=20):
         # initialize the next unique object ID along with two ordered
         # dictionaries used to keep track of mapping a given object
         # ID to its centroid and number of consecutive frames it has
