@@ -104,7 +104,7 @@ def rotate_image(img: ndarray, orientation: dict) -> ndarray:
     @return: numpy array with the (un)altered image
     """
     # img = imread(img_path, 0)
-    cols, rows = img.shape
+    cols, rows, colors = img.shape
 
     t = get_transformation_matrix(orientation, (rows/2, cols/2))
     dst = warpPerspective(img, t, (rows, cols), flags=INTER_LANCZOS4)

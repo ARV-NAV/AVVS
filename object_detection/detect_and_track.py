@@ -10,16 +10,16 @@ import datetime
 
 import cv2
 import numpy as np
-from object_detection.CentroidTracker import CentroidTracker
-from object_detection.ObjData import ObjData
+from object_detection import CentroidTracker
+from object_detection import ObjData
 
 # ================ Authorship ================ #
 
 __author__ = "Donald Max Harkins"
 __contributors__ = ["Donald Max Harkins"]
 
-# ================ Initialization ================ #
 
+# ================ Initialization ================ #
 
 # Load a model imported from Tensorflow
 tensorflowNet = cv2.dnn.readNetFromTensorflow(
@@ -50,7 +50,6 @@ np.random.seed(37)
 COLORS = np.random.randint(0, 255, size=(len(LABELS), 3),
 	dtype="uint8")
 
-# ================ Function Definitions ================ #
 
 # Define function to process Tensorflow network output
 def process_DNN_output(networkOutput, rows, cols):
@@ -66,7 +65,7 @@ def process_DNN_output(networkOutput, rows, cols):
             top = int(detection[4] * rows)
             right = int(detection[5] * cols)
             bottom = int(detection[6] * rows)
-            data = ObjData((left, bottom, right, top),
+            data = ObjData.objData((left, bottom, right, top),
                            datetime.datetime.now().strftime("%H:%M:%S.%f"),
                            LABELS[objID],
                            detection[2],
@@ -103,3 +102,5 @@ def detect_in_image(img, ct):
 
     # Now, update the centroid tracker with the newly found bounding boxes
     (objects, data) = ct.update(rects)
+
+    return len(rects)
