@@ -76,10 +76,10 @@ class Imu:
     }
 """
 
-        print("Parsing IMU data ...")
+        # print("Parsing IMU data ...")
         start_time = time()
         orientation = self.eng.parse_imu(self.filepath, self.eng.logical(1))
-        print("Parsing complete. Time elapsed: {0}s".format(time() - start_time))
+        # print("Parsing complete. Time elapsed: {0}s".format(time() - start_time))
 
         test_dict = {'heading':np.asarray(orientation['attitude']['heading_update_source_state']['heading']),
                     'pitch':np.asarray(orientation['attitude']['orientation_euler_angles']['pitch']),
