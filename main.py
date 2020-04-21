@@ -86,21 +86,25 @@ if __name__ == "__main__":
 
         # calculate pos
         output = []
-        viewport_width = 0    # image x dimension px
-        viewport_height = 0   # image y dimension px
-        viewport_angle = config. # image diagnal px
-        for obj in tracker.objects:
+        viewport_width = transformed_image.shape[1]  # image x dimension px
+        viewport_height = transformed_image.shape[0] # image y dimension px
+        viewport_angle = config.VIEWPORT_ANGLE       # image diagnal px
+        for obj in tracker.objects.items():
 
-            object_xpos = 0       # horizontal center of bounding box
+            ( objID, centroid ) = obj
+            centroid_xpos = centroid[0]       # horizontal center of bounding box
 
             compass_angle = calculate_angle(
                 viewport_width,
                 viewport_height,
                 viewport_angle,
-                object_xpos
+                centroid_xpos 
             )
 
-            detected_obj = (obj.id, compass_angle)
+            if (config.VERBOSE):
+                print("objID: " + str(objID) + ", Centroid_xpos: " + str(centroid_xpos))
+
+            detected_obj = (objID, compass_angle)
             output.append(detected_obj)
 
         # output pos

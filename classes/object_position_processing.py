@@ -7,4 +7,6 @@ def calculate_angle(width, height, viewport_angle, object_x):
     degree_per_pixel = viewport_angle/diagonal
     distance_from_center = abs(object_x - width/2)
     angle_of_object = degree_per_pixel * distance_from_center
+    if(object_x < width/2):
+        angle_of_object *= -1
     return angle_of_object

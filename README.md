@@ -5,8 +5,7 @@ AVVS is a computer vision system developed for the ROSS (Robotic Oceanagraphic S
 ## Installation
 
 ### Windows
-
-Blah, blah, blah!!!
+This system is not developed for windows.
 
 ### Linux
 
