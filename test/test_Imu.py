@@ -1,15 +1,18 @@
 import unittest
-from config import IMU_MOCK_PATH
+import os
+from config import ROOT_DIR
 from classes.Imu import Imu
 from test.mocks.parsed_imu_data import imu_data_mock, imu_last_valid_data_mock
 from numpy.testing import assert_allclose
+
+MOCK_IMU_PATH = os.path.join(ROOT_DIR, 'test/mocks/IMU_timestamped_test_data.bin')
 
 
 class Test_IMU(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.imu = Imu(IMU_MOCK_PATH)
+        cls.imu = Imu(MOCK_IMU_PATH)
 
     def test_get_last_orientation(self):
         data = self.imu.get_last_orientation()

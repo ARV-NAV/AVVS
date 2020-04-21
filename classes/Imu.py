@@ -12,7 +12,7 @@ import os
 
 import matlab.engine as m_engine
 import numpy as np
-from config import ROOT_DIR
+import config
 
 # ================ Authorship ================ #
 
@@ -29,7 +29,7 @@ class Imu:
         print("Initilizing IMU...")
         self.eng = m_engine.start_matlab()
         print("Initilization Complete. Time elapsed: {0}s".format(time() - start_time) )
-        self.eng.addpath(os.path.join(ROOT_DIR, '3rd_party_scripts'))
+        self.eng.addpath(os.path.join(config.ROOT_DIR, '3rd_party_scripts'))
 
     def get_last_orientation(self) -> dict:
         """Get Last Orientation
@@ -76,10 +76,10 @@ class Imu:
     }
 """
 
-        print("Parsing IMU data ...")
+        # print("Parsing IMU data ...")
         start_time = time()
         orientation = self.eng.parse_imu(self.filepath, self.eng.logical(1))
-        print("Parsing complete. Time elapsed: {0}s".format(time() - start_time))
+        # print("Parsing complete. Time elapsed: {0}s".format(time() - start_time))
 
         test_dict = {'heading':np.asarray(orientation['attitude']['heading_update_source_state']['heading']),
                     'pitch':np.asarray(orientation['attitude']['orientation_euler_angles']['pitch']),
