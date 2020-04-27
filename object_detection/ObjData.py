@@ -17,12 +17,14 @@ __contributors__ = ["Donald Max Harkins"]
 # ================ Class defenition ================ #
 
 class objData():
-    def __init__(self, rect, timestamp, label, confidence, color):
+    def __init__(self, rect, timestamp, label, confidence, color, size):
         self.rect = rect
         self.timestamp = timestamp
         self.label = label
         self.confidence = confidence
         self.color = color
+        # Sixe is a measure of bounding box width as a fraction of the image width
+        self.size = size
 
     def drawData(self, img):
          #draw a coloured rectangle around object.

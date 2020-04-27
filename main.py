@@ -98,11 +98,13 @@ if __name__ == "__main__":
                 viewport_width,
                 viewport_height,
                 viewport_angle,
-                centroid_xpos 
+                centroid_xpos
             )
 
+            doubling_times = tracker.getDoublingTimes()
+
             if (config.VERBOSE):
-                print("objID: " + str(objID) + ", Centroid_xpos: " + str(centroid_xpos))
+                print("objID: " + str(objID) + ", Centroid_xpos: " + str(centroid_xpos) + ", doubling_time: " + str(doubling_times[objID]))
 
             detected_obj = (objID, compass_angle)
             output.append(detected_obj)

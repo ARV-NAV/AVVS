@@ -49,6 +49,25 @@ class CentroidTracker():
             except AttributeError:
                 pass
 
+    # Estimated doubling time based on current and previous size datapoints
+    # Could use least squares regression to calculate more accurate size estimation
+    # as number of size datapoints increases
+    def getDoublingTimes(self):
+        doubling_times = OrderedDict()
+        # Calculates doubling time even if object out of frame (based on last known data)
+        # Inverse relationship approximated by linear relationship
+        for key in self.objectData:
+            if (len(self.objectData[key]) > 1):
+                t_elapsed = self.objectData[key][-1].timestamp - self.objectData[key][-2].timestamp
+                size_increase = self.objectData[key][-1].size - self.objectData[key][-2].size
+                rate = size_increase / t_elapsed
+                # Assuming angular size (data.size) continues to increase linearly
+                doubling_time = self.objectData[key][-1].size / rate
+                doubling_times[key] = doubling_time
+            else:
+                doubling_times[key] = float('-inf')
+        return doubling_times
+
     def register(self, centroid, dataObj):
         # when registering an object we use the next available object
         # ID to store the centroid
