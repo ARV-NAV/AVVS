@@ -1,6 +1,6 @@
 """ Object to store data used by centroid tracker
     * Stores a list of objData objects to track postition over time
-    * Stores a count of all frames where the object has dissapeared
+    * Stores a count of all frames where the object has disappeared
     * Stores the most recent centroid for each object
     * Stores and updates doubling time using moving average
 """
@@ -34,13 +34,13 @@ class trackedObject():
             self.doubling_time = self.data[-1].size / rate
 
 
-    def update(self, centroid=[], data=None, dissapeared=False):
-        if dissapeared:
-            self.dissapeared += 1
+    def update(self, centroid=[], data=None, disappeared=False):
+        if disappeared:
+            self.disappeared += 1
 
         if len(centroid) > 0:
             self.centroid = centroid
-            self.dissapeared = 0
+            self.disappeared = 0
 
         if data:
             self.data.append(data)

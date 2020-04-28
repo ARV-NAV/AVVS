@@ -59,18 +59,18 @@ class CentroidTracker():
         if len(newObjs) == 0:
             # loop over any existing tracked objects and mark them
             # as disappeared
-            for objectID in list(self.disappeared.keys()):
-                self.objects[objectID].update(dissapeared=True)
+            for objectID in list(self.objects.keys()):
+                self.objects[objectID].update(disappeared=True)
 
                 # if we have reached a maximum number of consecutive
                 # frames where a given object has been marked as
                 # missing, deregister it
-                if self.objects[objectID] > self.maxDisappeared:
+                if self.objects[objectID].disappeared > self.maxDisappeared:
                     self.deregister(objectID)
 
             # return early as there are no centroids or tracking info
             # to update
-            return (self.objects, self.objectData)
+            return self.objects
 
         # initialize an array of input centroids for the current frame
         inputCentroids = np.zeros((len(newObjs), 2), dtype="int")
@@ -157,12 +157,12 @@ class CentroidTracker():
                     # grab the object ID for the corresponding row
                     # index and increment the disappeared counter
                     objectID = objectIDs[row]
-                    self.objects[objectID].update(dissapeared=True)
+                    self.objects[objectID].update(disappeared=True)
 
                     # check to see if the number of consecutive
                     # frames the object has been marked "disappeared"
                     # for warrants deregistering the object
-                    if self.objects[objectID].dissapeared > self.maxDisappeared:
+                    if self.objects[objectID].disappeared > self.maxDisappeared:
                         self.deregister(objectID)
 
             # otherwise, if the number of input centroids is greater
