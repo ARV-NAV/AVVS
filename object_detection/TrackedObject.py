@@ -28,6 +28,8 @@ class trackedObject():
             t_elapsed = self.data[-1].timestamp - self.data[-2].timestamp
             size_increase = self.data[-1].size - self.data[-2].size
             rate = size_increase / t_elapsed
+            if rate == 0:
+                rate = 1e-10
             # Assuming angular size (data.size) continues to increase linearly
             self.doubling_time = self.data[-1].size / rate
 
