@@ -162,7 +162,7 @@ class CentroidTracker():
                     # check to see if the number of consecutive
                     # frames the object has been marked "disappeared"
                     # for warrants deregistering the object
-                    if self.disappeared[objectID] > self.maxDisappeared:
+                    if self.objects[objectID].dissapeared > self.maxDisappeared:
                         self.deregister(objectID)
 
             # otherwise, if the number of input centroids is greater
