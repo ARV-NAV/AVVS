@@ -16,12 +16,16 @@ __contributors__ = ["Donald Max Harkins"]
 
 # ================ Class defenition ================ #
 
+# Weight for exponential moving average
+ALPHA = 0.15
+
 class trackedObject():
     def __init__(self, centroid, data):
         self.centroid = centroid
         self.data = [data]
         self.disappeared = 0
         self.doubling_time = None
+        self.__exponential_rate_average = None
 
     def __update_doubling_time(self):
         if (len(self.data) > 1):
@@ -30,9 +34,17 @@ class trackedObject():
             rate = size_increase / t_elapsed
             if rate == 0:
                 rate = 1e-10
-            # Assuming angular size (data.size) continues to increase linearly
-            self.doubling_time = self.data[-1].size / rate
 
+            # Calculate the exponential weighted average if there has already been
+            # one rate found, otherwise use the first rate found
+            if self.__exponential_rate_average == None:
+                self.__exponential_rate_average = rate
+            else:
+                self.__exponential_rate_average = (1 - ALPHA) * self.__exponential_rate_average + ALPHA * rate
+
+            # Doubling time calculated assuming growth rate is linear
+            # (i.e. in X seconds, size increases by *rate* amount)
+            self.doubling_time = self.data[-1].size / self.__exponential_rate_average
 
     def update(self, centroid=[], data=None, disappeared=False):
         if disappeared:
