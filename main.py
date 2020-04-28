@@ -89,10 +89,10 @@ if __name__ == "__main__":
         viewport_width = transformed_image.shape[1]  # image x dimension px
         viewport_height = transformed_image.shape[0] # image y dimension px
         viewport_angle = config.VIEWPORT_ANGLE       # image diagnal px
-        for obj in tracker.objects.items():
+        for item in tracker.objects.items():
 
-            ( objID, centroid ) = obj
-            centroid_xpos = centroid[0]       # horizontal center of bounding box
+            ( objID, obj ) = item
+            centroid_xpos = obj.centroid[0]       # horizontal center of bounding box
 
             compass_angle = calculate_angle(
                 viewport_width,
@@ -101,10 +101,8 @@ if __name__ == "__main__":
                 centroid_xpos
             )
 
-            doubling_times = tracker.getDoublingTimes()
-
             if (config.VERBOSE):
-                print("objID: " + str(objID) + ", Centroid_xpos: " + str(centroid_xpos) + ", doubling_time: " + str(doubling_times[objID]))
+                print("objID: " + str(objID) + ", Centroid_xpos: " + str(centroid_xpos) + ", doubling_time: " + str(obj.doubling_time))
 
             detected_obj = (objID, compass_angle)
             output.append(detected_obj)

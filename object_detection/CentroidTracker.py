@@ -17,6 +17,8 @@ from scipy.spatial import distance as dist
 import numpy as np
 import cv2 as cv2
 
+from object_detection import TrackedObject
+
 
 # ================ Class defenition ================ #
 class CentroidTracker():
@@ -27,8 +29,6 @@ class CentroidTracker():
         # been marked as "disappeared", respectively
         self.nextObjectID = 0
         self.objects = OrderedDict()
-        self.objectData = OrderedDict()
-        self.disappeared = OrderedDict()
 
         # store the number of maximum consecutive frames a given
         # object is allowed to be marked as "disappeared" until we
@@ -37,51 +37,20 @@ class CentroidTracker():
 
     def drawObjects(self, img):
         #loop over the tracked objects and display the centroid
-        for (objID, centroid) in self.objects.items():
-            text = "ID {}".format(objID)
-            cv2.putText(img, text, (centroid[0] - 10, centroid[1] - 10),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
-            cv2.circle(img, (centroid[0], centroid[1]), 4, (0, 0, 0), -1)
-            # If the most recent data we're storing with the object has a draw function,
-            # we call it
-            try:
-                self.objectData[objID][-1].drawData(img)
-            except AttributeError:
-                pass
+        for (objID, obj) in self.objects.items():
+            obj.drawObject(objID, img)
 
-    # Estimated doubling time based on current and previous size datapoints
-    # Could use least squares regression to calculate more accurate size estimation
-    # as number of size datapoints increases
-    def getDoublingTimes(self):
-        doubling_times = OrderedDict()
-        # Calculates doubling time even if object out of frame (based on last known data)
-        # Inverse relationship approximated by linear relationship
-        for key in self.objectData:
-            if (len(self.objectData[key]) > 1):
-                t_elapsed = self.objectData[key][-1].timestamp - self.objectData[key][-2].timestamp
-                size_increase = self.objectData[key][-1].size - self.objectData[key][-2].size
-                rate = size_increase / t_elapsed
-                # Assuming angular size (data.size) continues to increase linearly
-                doubling_time = self.objectData[key][-1].size / rate
-                doubling_times[key] = doubling_time
-            else:
-                doubling_times[key] = float('-inf')
-        return doubling_times
 
     def register(self, centroid, dataObj):
         # when registering an object we use the next available object
         # ID to store the centroid
-        self.objects[self.nextObjectID] = centroid
-        self.objectData[self.nextObjectID] = [dataObj]
-        self.disappeared[self.nextObjectID] = 0
+        self.objects[self.nextObjectID] = TrackedObject.trackedObject(centroid, dataObj)
         self.nextObjectID += 1
 
     def deregister(self, objectID):
         # to deregister an object ID we delete the object ID from
         # both of our respective dictionaries
         del self.objects[objectID]
-        del self.disappeared[objectID]
-        del self.objectData[objectID]
 
     # Parameter newObjs is a list of rectangle lists [startX, startY, endX, endY]
     def update(self, newObjs):
@@ -91,12 +60,12 @@ class CentroidTracker():
             # loop over any existing tracked objects and mark them
             # as disappeared
             for objectID in list(self.disappeared.keys()):
-                self.disappeared[objectID] += 1
+                self.objects[objectID].update(dissapeared=True)
 
                 # if we have reached a maximum number of consecutive
                 # frames where a given object has been marked as
                 # missing, deregister it
-                if self.disappeared[objectID] > self.maxDisappeared:
+                if self.objects[objectID] > self.maxDisappeared:
                     self.deregister(objectID)
 
             # return early as there are no centroids or tracking info
@@ -126,7 +95,7 @@ class CentroidTracker():
         else:
             # grab the set of object IDs and corresponding centroids
             objectIDs = list(self.objects.keys())
-            objectCentroids = list(self.objects.values())
+            objectCentroids = [o.centroid for o in self.objects.values()]
 
             # compute the distance between each pair of object
             # centroids and input centroids, respectively -- our
@@ -165,9 +134,8 @@ class CentroidTracker():
                 # set its new centroid, and reset the disappeared
                 # counter
                 objectID = objectIDs[row]
-                self.objects[objectID] = inputCentroids[col]
-                (self.objectData[objectID]).append(inputData[col])
-                self.disappeared[objectID] = 0
+                self.objects[objectID].update(centroid=inputCentroids[col],
+                                              data=inputData[col])
 
                 # indicate that we have examined each of the row and
                 # column indexes, respectively
@@ -189,7 +157,7 @@ class CentroidTracker():
                     # grab the object ID for the corresponding row
                     # index and increment the disappeared counter
                     objectID = objectIDs[row]
-                    self.disappeared[objectID] += 1
+                    self.objects[objectID].update(dissapeared=True)
 
                     # check to see if the number of consecutive
                     # frames the object has been marked "disappeared"
@@ -205,4 +173,4 @@ class CentroidTracker():
                     self.register(inputCentroids[col], inputData[col])
 
         # return the set of trackable objects
-        return (self.objects, self.objectData)
+        return self.objects

@@ -106,6 +106,6 @@ def detect_in_image(img, ct):
     rects = process_DNN_output(network_output, rows, cols)
 
     # Now, update the centroid tracker with the newly found bounding boxes
-    (objects, data) = ct.update(rects)
+    trackedObjs = ct.update(rects)
 
     return len(rects)
