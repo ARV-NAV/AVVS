@@ -39,9 +39,6 @@ def get_transformation_matrix(orientation: dict, img_szie: Tuple[float, float]) 
     focal_mm = config.CAM_FOCAL_LENGTH
     sensor_width_mm = config.CAM_SENSOR_WIDTH
 
-    # focal_mm = 26  # This is specific for a Samsung Galaxy S8 Rear Camera
-    # sensor_width_mm = 7.06  # This is specific for a Samsung Galaxy S8 Rear Camera
-
     f = (focal_mm / sensor_width_mm) * (cx * 2)  # focal length expressed in pixel units
 
     # Camera Calibration Intrinsics Matrix
@@ -126,7 +123,7 @@ if __name__ == "__main__":
     }
 
     # The following image was captured with a Samsung Galaxy S8
-    # new_img = rotate_image('./images/img_30_2.jpg', test_data)
+    # new_img = rotate_image(imread('./images/img_30_2.jpg'), test_data)
 
     # The following image was captured with a Logitech c920 Camera
     new_img = rotate_image(imread('./logitech_camera/data/frame129.jpg'), test_data)
