@@ -107,7 +107,6 @@ def rotate_image(img: ndarray, orientation: dict) -> ndarray:
 
     @return: numpy array with the (un)altered image
     """
-    # img = imread(img_path, 0)
     cols, rows, colors = img.shape
 
     t = get_transformation_matrix(orientation, (rows/2, cols/2))
