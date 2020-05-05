@@ -11,7 +11,7 @@ from typing import Tuple
 # ================ Third Party Imports ================
 
 from numpy import ndarray, matmul, array
-from cv2 import imread, warpPerspective, INTER_LANCZOS4
+from cv2 import warpPerspective, INTER_LANCZOS4
 
 # ================ User Imports ================
 
@@ -29,9 +29,9 @@ def get_transformation_matrix(orientation: dict, img_szie: Tuple[float, float]) 
     off the orientation data.
     This was taken from https://stackoverflow.com/a/37279632
     """
-    roll = orientation["pitch"].item(0) if config.USE_ROLL else 0
-    pitch = orientation["yaw"].item(0) if config.USE_PITCH else 0
-    yaw = orientation["roll"].item(0) if config.USE_YAW else 0
+    pitch = orientation["pitch"].item(0) if config.USE_PITCH else 0
+    yaw = orientation["yaw"].item(0) if config.USE_YAW else 0
+    roll = orientation["roll"].item(0) if config.USE_ROLL else 0
     dx, dy, dz = 0, 0, 1
 
     cx, cy = img_szie  # principal point that is usually at the image center
@@ -62,21 +62,21 @@ def get_transformation_matrix(orientation: dict, img_szie: Tuple[float, float]) 
     # Rotation matrices around the X, Y, and Z axis
     rx = array([
         [1,     0,          0,          0],
-        [0,     cos(roll),  -sin(roll), 0],
-        [0,     sin(roll),  -cos(roll), 0],
+        [0,     cos(pitch),  -sin(pitch), 0],
+        [0,     sin(pitch),  -cos(pitch), 0],
         [0,     0,          0,          1]
     ], dtype=float)
 
     ry = array([
-        [cos(pitch),    0, sin(pitch),  0],
+        [cos(yaw),    0, sin(yaw),  0],
         [0,             1, 0,           0],
-        [-sin(pitch),   0, cos(pitch),  0],
+        [-sin(yaw),   0, cos(yaw),  0],
         [0,             0, 0,           1]
     ], dtype=float)
 
     rz = array([
-        [cos(yaw), -sin(yaw), 0, 0],
-        [sin(yaw),  cos(yaw), 0, 0],
+        [cos(roll), -sin(roll), 0, 0],
+        [sin(roll),  cos(roll), 0, 0],
         [0,         0,        1, 0],
         [0,         0,        0, 1]
     ], dtype=float)
@@ -129,7 +129,7 @@ if __name__ == "__main__":
     # new_img = rotate_image('./images/img_30_2.jpg', test_data)
 
     # The following image was captured with a Logitech c920 Camera
-    new_img = rotate_image(imread('./logitech_camera/data/frame129.jpg', 0), test_data)
+    new_img = rotate_image(imread('./logitech_camera/data/frame129.jpg'), test_data)
 
     imwrite("saved_img.jpg", new_img)
 
