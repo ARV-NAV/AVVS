@@ -58,24 +58,24 @@ def get_transformation_matrix(orientation: dict, img_szie: Tuple[float, float]) 
 
     # Rotation matrices around the X, Y, and Z axis
     rx = array([
-        [1,     0,          0,          0],
-        [0,     cos(pitch),  -sin(pitch), 0],
-        [0,     sin(pitch),  -cos(pitch), 0],
-        [0,     0,          0,          1]
+        [1,     0,          0,            0],
+        [0,     cos(pitch), -sin(pitch), 0],
+        [0,     sin(pitch), -cos(pitch), 0],
+        [0,     0,          0,            1]
     ], dtype=float)
 
     ry = array([
         [cos(yaw),    0, sin(yaw),  0],
-        [0,             1, 0,           0],
+        [0,           1, 0,         0],
         [-sin(yaw),   0, cos(yaw),  0],
-        [0,             0, 0,           1]
+        [0,           0, 0,         1]
     ], dtype=float)
 
     rz = array([
         [cos(roll), -sin(roll), 0, 0],
         [sin(roll),  cos(roll), 0, 0],
-        [0,         0,        1, 0],
-        [0,         0,        0, 1]
+        [0,         0,          1, 0],
+        [0,         0,          0, 1]
     ], dtype=float)
 
     # Translation matrix
