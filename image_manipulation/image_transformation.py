@@ -117,12 +117,13 @@ def rotate_image(img: ndarray, orientation: dict) -> ndarray:
 
 
 if __name__ == "__main__":
+    from numpy import asarray
     from cv2 import imshow, imread, waitKey, destroyAllWindows, imwrite
 
     test_data = {
-        "pitch": 0,
-        "yaw": 0,
-        "roll": 1.0472,  # 60 degrees
+        "pitch": asarray(0),
+        "yaw": asarray(0),
+        "roll": asarray(1.0472),  # 60 degrees
     }
 
     # The following image was captured with a Samsung Galaxy S8
