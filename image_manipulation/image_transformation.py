@@ -13,6 +13,10 @@ from typing import Tuple
 from numpy import ndarray, matmul, array
 from cv2 import imread, warpPerspective, INTER_LANCZOS4
 
+# ================ User Imports ================
+
+import config
+
 # ================ Authorship ================
 
 __author__ = "Gregory Sanchez"
@@ -25,15 +29,15 @@ def get_transformation_matrix(orientation: dict, img_szie: Tuple[float, float]) 
     off the orientation data.
     This was taken from https://stackoverflow.com/a/37279632
     """
-    roll = orientation["pitch"].item(0)
-    pitch = orientation["yaw"].item(0)
-    yaw = orientation["roll"].item(0)
+    roll = orientation["pitch"].item(0) if config.USE_ROLL else 0
+    pitch = orientation["yaw"].item(0) if config.USE_PITCH else 0
+    yaw = orientation["roll"].item(0) if config.USE_YAW else 0
     dx, dy, dz = 0, 0, 1
 
     cx, cy = img_szie  # principal point that is usually at the image center
 
-    focal_mm = 3.67  # This is specific for a Logitech c920 Camera (TODO: make sure this is correct)
-    sensor_width_mm = 4.8  # This is specific for a Logitech c920 Camera
+    focal_mm = config.CAM_FOCAL_LENGTH
+    sensor_width_mm = config.CAM_SENSOR_WIDTH
 
     # focal_mm = 26  # This is specific for a Samsung Galaxy S8 Rear Camera
     # sensor_width_mm = 7.06  # This is specific for a Samsung Galaxy S8 Rear Camera
@@ -113,7 +117,7 @@ def rotate_image(img: ndarray, orientation: dict) -> ndarray:
 
 
 if __name__ == "__main__":
-    from cv2 import imshow, waitKey, destroyAllWindows, imwrite
+    from cv2 import imshow, imread, waitKey, destroyAllWindows, imwrite
 
     test_data = {
         "pitch": 0,
@@ -125,7 +129,7 @@ if __name__ == "__main__":
     # new_img = rotate_image('./images/img_30_2.jpg', test_data)
 
     # The following image was captured with a Logitech c920 Camera
-    new_img = rotate_image('./logitech_camera/data/frame129.jpg', test_data)
+    new_img = rotate_image(imread('./logitech_camera/data/frame129.jpg', 0), test_data)
 
     imwrite("saved_img.jpg", new_img)
 
