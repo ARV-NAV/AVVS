@@ -62,12 +62,18 @@ AVVS is a computer vision system developed for the ROSS (Robotic Oceanographic S
     
     Update the *absolute_path_to_venv* variable to use the absolute path for the virtual environment.
         
-        This path has _not_ been created yet, and it will be installed where the repository was cloned. (E.g. git cloned to /test/AVVS; venv will be in /test/AVVS/venv)
+        This path has not been created yet, and it will be installed where the repository was cloned. (E.g. git cloned to /test/AVVS; venv will be in /test/AVVS/venv)
         For Windows the path must be in Windows format (i.e. "C:\test\AVVS\venv" instead of "/c/test/AVVS/venv").
-        
-3) 
 
-    In your bash terminal. Navigate to the AVVS direcotry and run the venv.sh file
+3) Make sure virtualenv is installed
+
+    ```bash
+   $ pip install virtualenv
+    ```
+        
+4) 
+
+    In your bash terminal. Navigate to the AVVS directory and run the venv.sh file
     
     ```bash
    # Example command
@@ -79,7 +85,7 @@ AVVS is a computer vision system developed for the ROSS (Robotic Oceanographic S
    Note: matlab is only installed into the virtual environment and is not available outside of it. 
    To use matlab outside the virtual environment follow this [guide](https://www.mathworks.com/help/matlab/matlab_external/install-the-matlab-engine-for-python.html).
         
-4) Navigate to the main.py file.
+5) Navigate to the main.py file.
 
     Update the shebang to include the path to your virtual environment. 
     ```bash
@@ -93,7 +99,7 @@ AVVS is a computer vision system developed for the ROSS (Robotic Oceanographic S
 
 2) Comment out the IMU_PATH variable that points 'IMU_timestamped_test_data.bin' and un-comment the line ``` IMU_PATH="path to raw data file"```, replacing ```"path to raw data file"``` with the absolute path to the live IMU data file.
 
-3) Replace the value of CAPTURE_DEVICE with the divece id of the camera used for collecting visual data. Use the command 'lsusb' from the terminal to discover your webcam's id which you can enter into the CAPTURE_DEVICE variable.
+3) Replace the value of CAPTURE_DEVICE with the device id of the camera used for collecting visual data. Use the command 'lsusb' from the terminal to discover your webcam's id which you can enter into the CAPTURE_DEVICE variable.
 ```bash
 # example
 lsusb
