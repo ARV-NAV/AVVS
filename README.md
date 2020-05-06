@@ -71,9 +71,7 @@ AVVS is a computer vision system developed for the ROSS (Robotic Oceanographic S
    $ pip install virtualenv
     ```
         
-4) 
-
-    In your bash terminal. Navigate to the AVVS directory and run the venv.sh file
+4) In your bash terminal. Navigate to the AVVS directory and run the venv.sh file
     
     ```bash
    # Example command
