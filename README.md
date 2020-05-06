@@ -122,7 +122,17 @@ Starting the AVVS will begin reading the data file pointed to by IMU_PATH config
 
 # Run the AVVS output to a file
 ./main.py > file.txt
+```
 
+To run another file on its own you must use the path to the virtual environment's python script.
+    
+```bash
+Linux/Mac: ./venv/bin/python
+Windows  : ./venv/Scripts/python
+
+# Example Usage
+Linux/Mac: ../venv/bin/python image_transformation.py
+Windows  : ./venv/Scripts/python image_transformation.py
 ```
 
 ## Testing
