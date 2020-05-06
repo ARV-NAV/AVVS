@@ -1,6 +1,6 @@
 # AVVS: Autonomus Vessle Vission System
 
-AVVS is a computer vision system developed for the ROSS (Robotic Oceanagraphic Surface Sampler). The AVVS collects visual data from the enviroment via a waterproofed front facing camera then detects and catagorizes obsticals providing feedback to the navigation system.
+AVVS is a computer vision system developed for the ROSS (Robotic Oceanographic Surface Sampler). The AVVS collects visual data from the enviroment via a waterproofed front facing camera then detects and categorizes obstacles providing feedback to the navigation system.
 
 ## Installation
 
@@ -61,6 +61,7 @@ AVVS is a computer vision system developed for the ROSS (Robotic Oceanagraphic S
     Update the *matlab_root_dir* variable to use the path saved from (1)
     
     Update the *absolute_path_to_venv* variable to use the absolute path for the virtual environment.
+        
         This path has _not_ been created yet, and it will be installed where the repository was cloned. (E.g. git cloned to /test/AVVS; venv will be in /test/AVVS/venv)
         For Windows the path must be in Windows format (i.e. "C:\test\AVVS\venv" instead of "/c/test/AVVS/venv").
         
@@ -76,7 +77,7 @@ AVVS is a computer vision system developed for the ROSS (Robotic Oceanagraphic S
     ```
    
    Note: matlab is only installed into the virtual environment and is not available outside of it. 
-   To use matlab outside the virtual environment follow this [guide](https://www.mathworks.com/help/matlab/matlab_external/install-the-matlab-engine-for-python.html)
+   To use matlab outside the virtual environment follow this [guide](https://www.mathworks.com/help/matlab/matlab_external/install-the-matlab-engine-for-python.html).
         
 4) Navigate to the main.py file.
 
