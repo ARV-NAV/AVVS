@@ -130,7 +130,7 @@ Windows  : ./venv/Scripts/python
 
 # Example Usage
 Linux/Mac: ../venv/bin/python image_transformation.py
-Windows  : ./venv/Scripts/python image_transformation.py
+Windows  : ../venv/Scripts/python image_transformation.py
 ```
 
 ## Testing
