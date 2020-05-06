@@ -4,16 +4,8 @@ AVVS is a computer vision system developed for the ROSS (Robotic Oceanagraphic S
 
 ## Installation
 
-### Windows
-This system is not developed for windows.
-
-### Linux
-
-#### Install OpenCV:
-
-```bash
-pip3 install opencv-python
-```
+### Note
+*The following installation assumes you have a bash terminal for use on Linux/Mac/Windows*
 
 #### Install Matlab:
 
@@ -23,11 +15,16 @@ pip3 install opencv-python
 
 2) Unzip the runtime package and install
 
-    ```bash
-    # Example using terminal
-    unzip matlab_R2020a_glnxa64.zip
-    sudo ./install
-    ```
+    * Linux/Mac
+        ```bash
+        # Example using terminal
+        unzip matlab_R2020a_glnxa64.zip
+        sudo ./install
+        ```
+    * Windows
+        
+        Unzip the matlab runtime zip, and run the setup.exe file.
+        
 3) Sign in using you matlab account username, and password
 
 4) Accept the MathWorks Licensing Agreement and click 'Next'
@@ -49,14 +46,44 @@ pip3 install opencv-python
 
 10) Click 'Begin Installation'
 
-#### Install Matlab Engine for Python:
+#### Install Python Dependencies:
 
-1) Navigate to your MATLAB root folder *(Note: generally, '/usr/local/MATLAB/R2020a' if you used the default location)*
-
-2) Enter the following command to install engine
-
+1) Locate and save the MATLAB root folder.
+ 
     ```bash
-    sudo python extern/engines/python/setup.py install
+    # Example Using Defualt locations
+    Linux/Mac: /usr/local/MATLAB/R2020a
+    Windows:   /c/Program\ Files\MATLAB\R2020a
+    ```
+
+2) Navigate to the venv.sh file.
+
+    Update the *matlab_root_dir* variable to use the path saved from (1)
+    
+    Update the *absolute_path_to_venv* variable to use the absolute path for the virtual environment.
+        This path has _not_ been created yet, and it will be installed where the repository was cloned. (E.g. git cloned to /test/AVVS; venv will be in /test/AVVS/venv)
+        For Windows the path must be in Windows format (i.e. "C:\test\AVVS\venv" instead of "/c/test/AVVS/venv").
+        
+3) 
+
+    In your bash terminal. Navigate to the AVVS direcotry and run the venv.sh file
+    
+    ```bash
+   # Example command
+   $ pwd
+   /test/AVVS
+   $ ./venv.sh
+    ```
+   
+   Note: matlab is only installed into the virtual environment and is not available outside of it. 
+   To use matlab outside the virtual environment follow this [guide](https://www.mathworks.com/help/matlab/matlab_external/install-the-matlab-engine-for-python.html)
+        
+4) Navigate to the main.py file.
+
+    Update the shebang to include the path to your virtual environment. 
+    ```bash
+   Linux/Mac : #!./venv/bin/python
+   Windows   : #!./venv/Scripts/python
     ```
 
 ## Configuration
@@ -84,12 +111,17 @@ Starting the AVVS will begin reading the data file pointed to by IMU_PATH config
 
 ```bash 
 # Run the AVVS 
-python main.py
+./main.py
 
 # Run the AVVS output to a file
-python main.py > file.txt
+./main.py > file.txt
 
 ```
 
 ## Testing
-- Run all Tests command: ```python -m unittest```
+- Run all Tests command: 
+
+    ```
+    Linux/Mac: ./venv/bin/python -m unittest
+    Windows  : ./venv/Scripts/python -m unittest
+    ```
