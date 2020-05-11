@@ -64,6 +64,12 @@ if __name__ == "__main__":
     # Last time a frame was processed
     last_processed_at = time()
 
+    # Number of skipped frames
+    skipped_frames = 0
+
+    # Current frame count
+    frame_count = 0
+
     while True:
         # Press Q on keyboard to  exit
         if cv.waitKey(1) & 0xFF == ord('q'):
@@ -74,8 +80,16 @@ if __name__ == "__main__":
         if not ret:
             break
 
+        frame_count += 1
+
         # Process a frame each time the interval has passed
         if last_processed_at + frame_processing_interval < time():
+
+            if config.VERBOSE:
+                print("__________ Frame: " + str(frame_count) + " __________")
+                print("Skipped Frames: " + str(skipped_frames))
+                skipped_frames = 0
+
             last_processed_at = time()
 
             # get attitude if valid image
@@ -112,7 +126,7 @@ if __name__ == "__main__":
                     centroid_xpos
                 )
 
-                if (config.VERBOSE):
+                if config.VERBOSE:
                     print("objID: " + str(objID) +
                           ", Centroid_xpos: " + str(centroid_xpos))
 
@@ -121,6 +135,10 @@ if __name__ == "__main__":
 
             # output pos
             print(output)
+
+        else: 
+            skipped_frames += 1
+
 
     # Clean up
     cap.release()
