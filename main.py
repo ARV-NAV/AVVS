@@ -9,7 +9,7 @@ import argparse
 # ================ Third Party Imports ================ #
 
 import cv2 as cv
-from time import sleep
+from time import sleep, time
 
 # ================ User Imports ================ #
 
@@ -23,7 +23,8 @@ from object_detection import CentroidTracker
 # ================ Authorship ================ #
 
 __author__ = "Chris Patenaude"
-__contributors__ = ["Chris Patenaude", "Gabriel Michael", "Gregory Sanchez", "Donald 'Max' Harkens", "Tobias Hodges"]
+__contributors__ = ["Chris Patenaude", "Gabriel Michael",
+                    "Gregory Sanchez", "Donald 'Max' Harkens", "Tobias Hodges"]
 
 # ================ Global Variables ================ #
 
@@ -57,6 +58,11 @@ if __name__ == "__main__":
     # Set up object tracker
     tracker = CentroidTracker.CentroidTracker()
 
+    # Time in seconds
+    frame_processing_interval = config.FRAME_INTERVAL
+
+    # Last time a frame was processed
+    last_processed_at = time()
 
     while True:
         # Press Q on keyboard to  exit
@@ -68,50 +74,53 @@ if __name__ == "__main__":
         if not ret:
             break
 
-        # get attitude if valid image
-        attitude = imu.get_last_valid_orientation()
+        # Process a frame each time the interval has passed
+        if last_processed_at + frame_processing_interval < time():
+            last_processed_at = time()
 
-        # Transform image
-        transformed_image = image_transformation.rotate_image(img, attitude)
+            # get attitude if valid image
+            attitude = imu.get_last_valid_orientation()
 
-        # detect and classify object
-        detect_and_track.detect_in_image(transformed_image, tracker)
+            # Transform image
+            transformed_image = image_transformation.rotate_image(
+                img, attitude)
 
-        # display on system
-        if (config.DRAW_TO_SCREEN):
-            # Draw the objects being tracked
-            tracker.drawObjects(transformed_image)
-            cv.imshow('Tracked Objects', transformed_image)
+            # detect and classify object
+            detect_and_track.detect_in_image(transformed_image, tracker)
 
+            # display on system
+            if (config.DRAW_TO_SCREEN):
+                # Draw the objects being tracked
+                tracker.drawObjects(transformed_image)
+                cv.imshow('Tracked Objects', transformed_image)
 
-        # calculate pos
-        output = []
-        viewport_width = transformed_image.shape[1]  # image x dimension px
-        viewport_height = transformed_image.shape[0] # image y dimension px
-        viewport_angle = config.VIEWPORT_ANGLE       # image diagnal px
-        for obj in tracker.objects.items():
+            # calculate pos
+            output = []
+            viewport_width = transformed_image.shape[1]  # image x dimension px
+            # image y dimension px
+            viewport_height = transformed_image.shape[0]
+            viewport_angle = config.VIEWPORT_ANGLE       # image diagnal px
+            for obj in tracker.objects.items():
+                (objID, centroid) = obj
+                # horizontal center of bounding box
+                centroid_xpos = centroid[0]
 
-            ( objID, centroid ) = obj
-            centroid_xpos = centroid[0]       # horizontal center of bounding box
+                compass_angle = calculate_angle(
+                    viewport_width,
+                    viewport_height,
+                    viewport_angle,
+                    centroid_xpos
+                )
 
-            compass_angle = calculate_angle(
-                viewport_width,
-                viewport_height,
-                viewport_angle,
-                centroid_xpos 
-            )
+                if (config.VERBOSE):
+                    print("objID: " + str(objID) +
+                          ", Centroid_xpos: " + str(centroid_xpos))
 
-            if (config.VERBOSE):
-                print("objID: " + str(objID) + ", Centroid_xpos: " + str(centroid_xpos))
+                detected_obj = (objID, compass_angle)
+                output.append(detected_obj)
 
-            detected_obj = (objID, compass_angle)
-            output.append(detected_obj)
-
-        # output pos
-        print(output)
-
-        # Sleep for 1 sec
-        sleep(1)
+            # output pos
+            print(output)
 
     # Clean up
     cap.release()
