@@ -25,17 +25,18 @@ class TrackedObject():
         self.centroid = centroid
         self.data = [data]
         self.disappeared = 0
-        self.halving_time = None                # This is the time untill the distance to the detected object is halved
+        self.size_increase = None                # This is the time untill the distance to the detected object is halved
         self.__exponential_rate_average = None
 
     # Note that distance is related to angular size where dist = actual width / tan(angular size)
-    def __update_halving_time(self):
+    # Since true size of the object must be known to calculate the distance to an object (given angular size)
+    # we opt to simply report the rate of bounding box increase
+    def __update_size_increase(self):
         if (len(self.data) > 1):
             t_elapsed = self.data[-1].timestamp - self.data[-2].timestamp
-            # We calculate distance increase by subtracting the inverse of the tangent of angular sizes at two points.
-            # Distance increase is in relation to the object's actual width (which is unknown)
-            dist_increase = (1 / math.tan(self.data[-1].size)) - (1 / math.tan(self.data[-2].size))
-            rate = dist_increase / t_elapsed
+            # Calculate the rate by calculating the time difference and size increase
+            size_increase = self.data[-1].size - self.data[-2].size
+            rate = size_increase / t_elapsed
             if rate == 0:
                 rate = 1e-10
 
@@ -46,10 +47,9 @@ class TrackedObject():
             else:
                 self.__exponential_rate_average = (1 - ALPHA) * self.__exponential_rate_average + ALPHA * rate
 
-            # Halving time calculated assuming growth rate is linear
-            # (i.e. in X seconds, distance increases by *rate* amount)
-            # Note, without the -1, this becomes doubling time
-            self.halving_time = -1 * (1 / self.data[-1].size) * (1 / self.__exponential_rate_average)
+            # Here we set the size_increase public variable as the private exponential average
+            # Value is scaled by 10000 to increase human readability
+            self.size_increase = 10000*self.__exponential_rate_average
 
     def update(self, centroid=None, data=None, disappeared=False):
         if disappeared:
@@ -61,7 +61,7 @@ class TrackedObject():
 
         if data is not None:
             self.data.append(data)
-            self.__update_halving_time()
+            self.__update_size_increase()
 
     def drawObject(self, objID, img):
         text = "ID {}".format(objID)

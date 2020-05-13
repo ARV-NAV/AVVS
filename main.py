@@ -102,7 +102,7 @@ if __name__ == "__main__":
             )
 
             if (config.VERBOSE):
-                print("objID: " + str(objID) + ", Centroid_xpos: " + str(centroid_xpos) + ", halving_time: " + str(obj.halving_time))
+                print("objID: " + str(objID) + ", Centroid_xpos: " + str(centroid_xpos) + ", size_increase: " + str(obj.size_increase))
 
             detected_obj = (objID, compass_angle)
             output.append(detected_obj)

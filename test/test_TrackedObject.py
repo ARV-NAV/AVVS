@@ -16,7 +16,7 @@ class Test_TrackedObject(unittest.TestCase):
         # Assert that upon initialization, tracker obj has a centroid but no doubling_time
         # and has not been marked as disappeared
         self.assertEqual(obj.centroid, center)
-        self.assertEqual(obj.halving_time, None)
+        self.assertEqual(obj.size_increase, None)
         self.assertEqual(obj.disappeared, 0)
 
         new_center = (2,2)
@@ -28,7 +28,7 @@ class Test_TrackedObject(unittest.TestCase):
         # Assert that the center has been updated, our boat has a positive value for halving time
         # since the angular size is increasing
         self.assertEqual(obj.centroid, new_center)
-        self.assertGreater(obj.halving_time, 0)
+        self.assertGreater(obj.size_increase, 0)
         self.assertEqual(obj.disappeared, 0)
 
 
@@ -58,7 +58,7 @@ class Test_TrackedObject(unittest.TestCase):
         old_centroid = obj.centroid
         old_data = obj.data
         old_disappeared = obj.disappeared
-        old_halving_time = obj.halving_time
+        old_halving_time = obj.size_increase
 
         obj.update()
 
@@ -66,4 +66,4 @@ class Test_TrackedObject(unittest.TestCase):
         self.assertEqual(obj.centroid, old_centroid)
         self.assertEqual(obj.data, old_data)
         self.assertEqual(obj.disappeared, old_disappeared)
-        self.assertEqual(obj.halving_time, old_halving_time)
+        self.assertEqual(obj.size_increase, old_halving_time)
