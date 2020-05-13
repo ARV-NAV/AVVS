@@ -16,7 +16,7 @@ __contributors__ = ["Donald Max Harkins"]
 
 # ================ Class defenition ================ #
 
-class objData():
+class ObjData():
     def __init__(self, rect, timestamp, label, confidence, color, size):
         self.rect = rect
         self.timestamp = timestamp

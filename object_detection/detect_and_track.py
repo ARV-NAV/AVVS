@@ -66,9 +66,9 @@ def process_DNN_output(network_output, rows, cols):
             top = int(detection[4] * rows)
             right = int(detection[5] * cols)
             bottom = int(detection[6] * rows)
-            # Sixe is a measure of bounding box width as a fraction of the image width
-            size = detection[5] - detection[3]
-            data = ObjData.objData((left, bottom, right, top),
+            # Size is a measure of bounding box width as a fraction of the image width
+            size = (detection[6] - detection[4])
+            data = ObjData.ObjData((left, bottom, right, top),
                            #datetime.datetime.now().strftime("%H:%M:%S.%f"),
                            time.time(),
                            LABELS[objID],

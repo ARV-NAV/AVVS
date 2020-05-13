@@ -8,6 +8,7 @@
 # ================ Third Party Imports ================ #
 
 import cv2 as cv2
+import math as math
 
 # ================ Authorship ================ #
 
@@ -19,19 +20,22 @@ __contributors__ = ["Donald Max Harkins"]
 # Weight for exponential moving average
 ALPHA = 0.15
 
-class trackedObject():
+class TrackedObject():
     def __init__(self, centroid, data):
         self.centroid = centroid
         self.data = [data]
         self.disappeared = 0
-        self.doubling_time = None
+        self.halving_time = None                # This is the time untill the distance to the detected object is halved
         self.__exponential_rate_average = None
 
-    def __update_doubling_time(self):
+    # Note that distance is related to angular size where dist = actual width / tan(angular size)
+    def __update_halving_time(self):
         if (len(self.data) > 1):
             t_elapsed = self.data[-1].timestamp - self.data[-2].timestamp
-            size_increase = self.data[-1].size - self.data[-2].size
-            rate = size_increase / t_elapsed
+            # We calculate distance increase by subtracting the inverse of the tangent of angular sizes at two points.
+            # Distance increase is in relation to the object's actual width (which is unknown)
+            dist_increase = (1 / math.tan(self.data[-1].size)) - (1 / math.tan(self.data[-2].size))
+            rate = dist_increase / t_elapsed
             if rate == 0:
                 rate = 1e-10
 
@@ -42,21 +46,22 @@ class trackedObject():
             else:
                 self.__exponential_rate_average = (1 - ALPHA) * self.__exponential_rate_average + ALPHA * rate
 
-            # Doubling time calculated assuming growth rate is linear
-            # (i.e. in X seconds, size increases by *rate* amount)
-            self.doubling_time = self.data[-1].size / self.__exponential_rate_average
+            # Halving time calculated assuming growth rate is linear
+            # (i.e. in X seconds, distance increases by *rate* amount)
+            # Note, without the -1, this becomes doubling time
+            self.halving_time = -1 * (1 / self.data[-1].size) * (1 / self.__exponential_rate_average)
 
-    def update(self, centroid=[], data=None, disappeared=False):
+    def update(self, centroid=None, data=None, disappeared=False):
         if disappeared:
             self.disappeared += 1
 
-        if len(centroid) > 0:
+        if centroid is not None:
             self.centroid = centroid
             self.disappeared = 0
 
-        if data:
+        if data is not None:
             self.data.append(data)
-            self.__update_doubling_time()
+            self.__update_halving_time()
 
     def drawObject(self, objID, img):
         text = "ID {}".format(objID)

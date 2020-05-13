@@ -44,7 +44,7 @@ class CentroidTracker():
     def register(self, centroid, dataObj):
         # when registering an object we use the next available object
         # ID to store the centroid
-        self.objects[self.nextObjectID] = TrackedObject.trackedObject(centroid, dataObj)
+        self.objects[self.nextObjectID] = TrackedObject.TrackedObject(centroid, dataObj)
         self.nextObjectID += 1
 
     def deregister(self, objectID):
