@@ -42,15 +42,25 @@ class Imu:
         start_time = time()
         orientation = self.eng.parse_imu(self.filepath, self.eng.logical(1))
 
-        test_dict = {'heading':np.asarray(orientation['attitude']['heading_update_source_state']['heading']),
-                    'pitch':np.asarray(orientation['attitude']['orientation_euler_angles']['pitch']),
-                    'roll':np.asarray(orientation['attitude']['orientation_euler_angles']['roll']),
-                    'yaw':np.asarray(orientation['attitude']['orientation_euler_angles']['yaw']),
-                    'valid_heading':np.asarray(orientation['attitude']['orientation_euler_angles']['valid']),
-                    'valid_orientation':np.asarray(orientation['attitude']['orientation_euler_angles']['valid']),
-                    'nuc_time':np.asarray(orientation['attitude']['nuc_time'])
+        new_dict = {'heading':np.asarray(orientation['GNSS']['velocity_north_east_down_frame']['heading']),
+            'pitch':np.asarray(orientation['IMU']['cf_euler_angles']['pitch']),
+            'roll':np.asarray(orientation['IMU']['cf_euler_angles']['roll']),
+            'yaw':np.asarray(orientation['IMU']['cf_euler_angles']['yaw']),
+            'valid_heading':np.asarray(orientation['IMU']['cf_euler_angles']['valid_flags']),
+            'valid_orientation':1,
+            'nuc_time':np.asarray(orientation['IMU']['nuc_time'])
         }
-        return test_dict
+        return new_dict
+        
+        # test_dict = {'heading':np.asarray(orientation['attitude']['heading_update_source_state']['heading']),
+        #             'pitch':np.asarray(orientation['attitude']['orientation_euler_angles']['pitch']),
+        #             'roll':np.asarray(orientation['attitude']['orientation_euler_angles']['roll']),
+        #             'yaw':np.asarray(orientation['attitude']['orientation_euler_angles']['yaw']),
+        #             'valid_heading':np.asarray(orientation['attitude']['orientation_euler_angles']['valid']),
+        #             'valid_orientation':np.asarray(orientation['attitude']['orientation_euler_angles']['valid']),
+        #             'nuc_time':np.asarray(orientation['attitude']['nuc_time'])
+        # }
+        # return test_dict
 
 
     def get_last_valid_orientation(self) -> dict:
