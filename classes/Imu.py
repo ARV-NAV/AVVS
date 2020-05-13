@@ -14,18 +14,12 @@ import os
 import matlab.engine as m_engine
 import numpy as np
 
-# REMOVE ME!!!
-# import pprint
-
 # ================ Authorship ================ #
 
 __author__ = "Chris Patenaude"
 __contributors__ = ["Chris Patenaude", "Gabriel Michael", "Gregory Sanchez"]
 
-# ================ Class defenition ================ #
-
-# REMOVE ME!!!
-# pp = pprint.PrettyPrinter(indent=2)
+# ================ Class definition ================ #
 
 class Imu:
 
@@ -33,9 +27,9 @@ class Imu:
         super().__init__()
         self.filepath = filepath
         start_time = time()
-        print("Initilizing IMU...")
+        print("Initializing IMU...")
         self.eng = m_engine.start_matlab()
-        print("Initilization Complete. Time elapsed: {0}s".format(time() - start_time) )
+        print("Initialization Complete. Time elapsed: {0}s".format(time() - start_time) )
         self.eng.addpath(os.path.join(config.ROOT_DIR, '3rd_party_scripts'))
 
     def get_last_orientation(self) -> dict:
@@ -49,9 +43,7 @@ class Imu:
         start_time = time()
         orientation = self.eng.parse_imu(self.filepath, self.eng.logical(1))
 
-        # REMOVE ME!!!
-        # pp.pprint(orientation)
-
+        # It looks like the valid data field was removed
         new_dict = {'heading':np.asarray(orientation['GNSS']['velocity_north_east_down_frame']['heading']),
             'pitch':np.asarray(orientation['IMU']['cf_euler_angles']['pitch']),
             'roll':np.asarray(orientation['IMU']['cf_euler_angles']['roll']),
@@ -83,13 +75,6 @@ class Imu:
         #         return valid_data
         #     else:
         #         i+=1
-
-        # REMOVE ME
-        # print(len(orientation_data['heading'][0]))
-        # print(len(orientation_data['pitch'][0]))
-        # print(len(orientation_data['roll'][0]))
-        # print(len(orientation_data['yaw'][0]))
-        # print(len(orientation_data['nuc_time'][0]))
 
         valid_data = {'heading':np.asarray(orientation_data['heading'][0][-1]),
                     'pitch':np.asarray(orientation_data['pitch'][0][-1]),
