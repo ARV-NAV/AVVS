@@ -93,3 +93,43 @@ python main.py > file.txt
 
 ## Testing
 - Run all Tests command: ```python -m unittest```
+
+## IMU Field Description
+
+Unit descriptions and field name for IMU data.
+
+```
+    'units': { 
+        'attitude': { 
+            'compensated_angular_rate': { 
+                'X': 'rads/sec',
+                'Y': 'rads/sec',
+                'Z': 'rads/sec',
+                'valid': '1=valid, 0=invalid'
+            },
+            'gps_timestamp': { 
+                'time_of_week': 'seconds',
+                'valid': '1=valid, 0=invalid',
+                'week_number': 'n/a'
+            },
+            'heading_update_source_state': { 
+                'heading': 'radians',
+                'heading_1_sigma_uncertainty': 'radians',
+                'source': '0=no source, 1=Magnetometer, 4=External',
+                'valid': '1=valid, 0=invalid'
+            },
+            'linear_acceleration': { 
+                'X': 'm/sec^2',
+                'Y': 'm/sec^2',
+                'Z': 'm/sec^2',
+                'valid': '1=valid, 0=invalid'
+            },
+            'orientation_euler_angles': { 
+                'pitch': 'radians',
+                'roll': 'radians',
+                'valid': '1=valid, 0=invalid',
+                'yaw': 'radians'
+            }
+        }
+    }
+```
