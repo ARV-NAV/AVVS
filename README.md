@@ -1,6 +1,6 @@
-# AVVS: Autonomus Vessle Vission System
+# AVVS: Autonomous Vessel Vision System
 
-AVVS is a computer vision system developed for the ROSS (Robotic Oceanagraphic Surface Sampler). The AVVS collects visual data from the enviroment via a waterproofed front facing camera then detects and catagorizes obsticals providing feedback to the navigation system.
+AVVS is a computer vision system developed for the ROSS (Robotic Oceanographic Surface Sampler). The AVVS collects visual data from the environment via a waterproofed front facing camera then detects and categorize obstacles providing feedback to the navigation system.
 
 ## Installation
 
@@ -8,6 +8,11 @@ AVVS is a computer vision system developed for the ROSS (Robotic Oceanagraphic S
 This system is not developed for windows.
 
 ### Linux
+
+#### Install basic dependencies 
+- python3 - [Linux Installation](https://docs.python-guide.org/starting/install3/linux/)
+- pip install numpy
+- pip install scipy
 
 #### Install OpenCV:
 
@@ -41,9 +46,6 @@ pip3 install opencv-python
 8) Ensure the following four products are selected, then click 'Next'
 
     * MATLAB
-    * Simulink
-    * Statistics and Machine Learning Toolbox
-    * Symbolic Math Toolbox
 
 9) Decide if you want to send usage data to MathWorks and click 'Next'
 
@@ -51,12 +53,12 @@ pip3 install opencv-python
 
 #### Install Matlab Engine for Python:
 
-1) Navigate to your MATLAB root folder *(Note: generally, '/usr/local/MATLAB/R2020a' if you used the default location)*
+1) Navigate to the python folder within Matlab *(Note: generally, '/usr/local/MATLAB/R2020a/extern/engines/python' if you used the default location)*
 
 2) Enter the following command to install engine
 
     ```bash
-    sudo python extern/engines/python/setup.py install
+    sudo python setup.py install
     ```
 
 ## Configuration
@@ -65,18 +67,14 @@ pip3 install opencv-python
 
 2) Comment out the IMU_PATH variable that points 'IMU_timestamped_test_data.bin' and un-comment the line ``` IMU_PATH="path to raw data file"```, replacing ```"path to raw data file"``` with the absolute path to the live IMU data file.
 
-3) Replace the value of CAPTURE_DEVICE with the divece id of the camera used for collecting visual data. Use the command 'lsusb' from the terminal to discover your webcam's id which you can enter into the CAPTURE_DEVICE variable.
+3) Replace the value of CAPTURE_DEVICE with the device id of the camera used for collecting visual data. The capture device corresponds to a video device, which can be found with the "ls /dev/video*" command. The value should be the decimal number (usually 0, 1, or 2) of the attached video camera. If there's only a single camera for the system, the value for CAPTURE_DEVICE should be 0.
+
 ```bash
 # example
-lsusb
+ls /dev/video*
 
 # output ...
-Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
-Bus 001 Device 004: ID 138a:0097 Validity Sensors, Inc. 
-Bus 001 Device 003: ID 04ca:7067 Lite-On Technology Corp. Integrated Camera
-Bus 001 Device 002: ID 8087:0a2b Intel Corp. 
-Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
-
+/dev/video0  /dev/video1
 ```
 
 ## Usage
@@ -93,3 +91,43 @@ python main.py > file.txt
 
 ## Testing
 - Run all Tests command: ```python -m unittest```
+
+## IMU Field Description
+
+Unit descriptions and field name for IMU data.
+
+```
+    'units': { 
+        'attitude': { 
+            'compensated_angular_rate': { 
+                'X': 'rads/sec',
+                'Y': 'rads/sec',
+                'Z': 'rads/sec',
+                'valid': '1=valid, 0=invalid'
+            },
+            'gps_timestamp': { 
+                'time_of_week': 'seconds',
+                'valid': '1=valid, 0=invalid',
+                'week_number': 'n/a'
+            },
+            'heading_update_source_state': { 
+                'heading': 'radians',
+                'heading_1_sigma_uncertainty': 'radians',
+                'source': '0=no source, 1=Magnetometer, 4=External',
+                'valid': '1=valid, 0=invalid'
+            },
+            'linear_acceleration': { 
+                'X': 'm/sec^2',
+                'Y': 'm/sec^2',
+                'Z': 'm/sec^2',
+                'valid': '1=valid, 0=invalid'
+            },
+            'orientation_euler_angles': { 
+                'pitch': 'radians',
+                'roll': 'radians',
+                'valid': '1=valid, 0=invalid',
+                'yaw': 'radians'
+            }
+        }
+    }
+```
