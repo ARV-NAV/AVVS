@@ -48,7 +48,8 @@ def getCaptureDevice():
             if info:
                 dinfo = info.groupdict()
                 if config.DEVICE_NAME in dinfo['tag']:
-                    print "Camera found"
+                    if config.VERBOSE:
+                        print "Camera found"
                     bus = dinfo['bus']
                     device = dinfo['device']
                     break
@@ -56,11 +57,13 @@ def getCaptureDevice():
     device_index = None
     for file in os.listdir("/sys/class/video4linux"):
         real_file = os.path.realpath("/sys/class/video4linux/" + file)
-        print real_file
-        print "/" + str(bus[-1]) + "-" + str(device[-1]) + "/"
+        if config.VERBOSE:
+            print real_file
+            print "/" + str(bus[-1]) + "-" + str(device[-1]) + "/"
         if "/" + str(bus[-1]) + "-" + str(device[-1]) + "/" in real_file:
             device_index = real_file[-1]
-            print "Device index is " + str(device_index)
+            if config.VERBOSE:
+                print "Device index is " + str(device_index)
 
     return device_index
 
