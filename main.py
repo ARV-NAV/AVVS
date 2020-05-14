@@ -33,33 +33,41 @@ __contributors__ = ["Chris Patenaude", "Gabriel Michael",
 
 # ================ Functions ================ #
 
-
+# When using a file for input, use the `filename` argument
 def getArgs():
     ap = argparse.ArgumentParser()
     ap.add_argument("filename", help="Capture video from a file")
     return vars(ap.parse_args())
 
+# Get the index of the camera using `lsusb`
 def getCaptureDevice():
+    # regex for finding bus and device ids
     device_re = re.compile("Bus\s+(?P<bus>\d+)\s+Device\s+(?P<device>\d+).+ID\s(?P<id>\w+:\w+)\s(?P<tag>.+)$", re.I)
+    # check the output of lsusb for a matching regex
     df = subprocess.check_output("lsusb", shell=True)
+    # loop through each line of lsusb output
     for i in df.split('\n'):
         if i:
             info = device_re.match(i)
             if info:
                 dinfo = info.groupdict()
+                # if a matching name is found, grab bus and device info; break
                 if config.DEVICE_NAME in dinfo['tag']:
                     if config.VERBOSE:
-                        print "Camera found"
+                        print "Camera found: " + config.DEVICE_NAME
                     bus = dinfo['bus']
                     device = dinfo['device']
                     break
 
+    # initialize device_index
     device_index = None
+    # navigate through all video4linux children
     for file in os.listdir("/sys/class/video4linux"):
         real_file = os.path.realpath("/sys/class/video4linux/" + file)
         if config.VERBOSE:
             print real_file
             print "/" + str(bus[-1]) + "-" + str(device[-1]) + "/"
+        # device with the bus and id information are found:: assign device_index
         if "/" + str(bus[-1]) + "-" + str(device[-1]) + "/" in real_file:
             device_index = real_file[-1]
             if config.VERBOSE:
