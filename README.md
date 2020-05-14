@@ -71,19 +71,26 @@ AVVS is a computer vision system developed for the ROSS (Robotic Oceanographic S
    $ pip install virtualenv
     ```
 
-4) In your bash terminal. Navigate to the AVVS directory and run the venv.sh file
+4) Update the venv.sh file variable to use python3
+
+    ```bash
+   python=python3 
+   ```
+
+5) In your bash terminal. Navigate to the AVVS directory, update the venv.sh to be an executable and run the venv.sh file
 
     ```bash
    # Example command
    $ pwd
    /test/AVVS
+   $ chmod +x ./venv.sh
    $ ./venv.sh
     ```
 
    Note: matlab is only installed into the virtual environment and is not available outside of it.
    To use matlab outside the virtual environment follow this [guide](https://www.mathworks.com/help/matlab/matlab_external/install-the-matlab-engine-for-python.html).
 
-5) Navigate to the main.py file.
+6) Navigate to the main.py file.
 
     Update the shebang to include the path to your virtual environment.
     ```bash
