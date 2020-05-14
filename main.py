@@ -73,6 +73,8 @@ if __name__ == "__main__":
 
     # Obtain camera device id
     device_id = getCaptureDevice()
+    if device_id is None:
+        raise TypeError
 
     # Component initilization
     imu = Imu(config.IMU_PATH)
