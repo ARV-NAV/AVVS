@@ -21,12 +21,10 @@ class Test_CentroidTracker(unittest.TestCase):
             tracker.register(testCentroid, testData)
             self.assertEqual(tracker.nextObjectID, i)
             self.assertEqual(len(tracker.objects), i)
-            self.assertEqual(len(tracker.objects), len(tracker.objectData))
 
         # Deregister Objects
         for i in range(0, numObjects):
             tracker.deregister(i)
-            self.assertEqual(len(tracker.objects), len(tracker.objectData))
             self.assertEqual(len(tracker.objects), numObjects - (i+1))
             self.assertEqual(tracker.nextObjectID, numObjects)
 
@@ -46,19 +44,16 @@ class Test_CentroidTracker(unittest.TestCase):
 
         # Assert all objects were added to empty tracker
         self.assertEqual(len(tracker.objects), len(objsToAdd))
-        self.assertEqual(len(tracker.objectData), len(objsToAdd))
 
         # Update with an empty list
         tracker.update([])
 
         # Assert the disappeared count is 1 for all objects
         for i in range(len(objsToAdd)):
-            self.assertEqual(tracker.disappeared[i], 1)
+            self.assertEqual(tracker.objects[i].disappeared, 1)
 
         # Update with empty list again
         tracker.update([])
 
         # Assert all objects removed from tracker (since max disappeared exceeded)
         self.assertEqual(len(tracker.objects), 0)
-        self.assertEqual(len(tracker.objectData), 0)
-        self.assertEqual(len(tracker.disappeared), 0)

@@ -28,3 +28,11 @@ imu_last_valid_data_mock = {
     'yaw': array(-0.14351282),
     'nuc_time': array(737316.91577211)
 }
+
+imu_last_valid_data_mock_roll_60_deg = {
+    'heading': array(0.),
+    'pitch': array(0.),
+    'roll': array(1.0472),
+    'yaw': array(0.),
+    'nuc_time': array(737316.91577211)
+}
