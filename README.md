@@ -38,9 +38,6 @@ AVVS is a computer vision system developed for the ROSS (Robotic Oceanographic S
 8) Ensure the following four products are selected, then click 'Next'
 
     * MATLAB
-    * Simulink
-    * Statistics and Machine Learning Toolbox
-    * Symbolic Math Toolbox
 
 9) Decide if you want to send usage data to MathWorks and click 'Next'
 
@@ -94,6 +91,7 @@ AVVS is a computer vision system developed for the ROSS (Robotic Oceanographic S
 
     Update the shebang to include the path to your virtual environment.
     ```bash
+
    Linux/Mac : #!./venv/bin/python
    Windows   : #!./venv/Scripts/python
     ```
@@ -104,15 +102,16 @@ AVVS is a computer vision system developed for the ROSS (Robotic Oceanographic S
 
 2) Comment out the IMU_PATH variable that points 'IMU_timestamped_test_data.bin' and un-comment the line ``` IMU_PATH="path to raw data file"```, replacing ```"path to raw data file"``` with the absolute path to the live IMU data file.
 
+
 3) Replace the value of CAPTURE_DEVICE with the video capture id of the camera used for collecting visual data. Use the command 'ls /dev/video*' from the terminal to discover available video capture devices on the system. To chose the correct device, unplug the video camera to be used from the system, list available video capture devices, then plug the USB camera in and run the command again. Use the new device.
+
 ```bash
 # example
 ls /dev/video*
 
-# output ...
+# output ...bash
 /dev/video0
 /dev/video1
-
 ```
 
 ## Usage
@@ -138,9 +137,49 @@ Windows  : ../venv/Scripts/python image_transformation.py
 ```
 
 ## Testing
+
 - Run all Tests command:
 
     ```
     Linux/Mac: ./venv/bin/python -m unittest
     Windows  : ./venv/Scripts/python -m unittest
     ```
+## IMU Field Description
+
+Unit descriptions and field name for IMU data.
+
+```
+    'units': { 
+        'attitude': { 
+            'compensated_angular_rate': { 
+                'X': 'rads/sec',
+                'Y': 'rads/sec',
+                'Z': 'rads/sec',
+                'valid': '1=valid, 0=invalid'
+            },
+            'gps_timestamp': { 
+                'time_of_week': 'seconds',
+                'valid': '1=valid, 0=invalid',
+                'week_number': 'n/a'
+            },
+            'heading_update_source_state': { 
+                'heading': 'radians',
+                'heading_1_sigma_uncertainty': 'radians',
+                'source': '0=no source, 1=Magnetometer, 4=External',
+                'valid': '1=valid, 0=invalid'
+            },
+            'linear_acceleration': { 
+                'X': 'm/sec^2',
+                'Y': 'm/sec^2',
+                'Z': 'm/sec^2',
+                'valid': '1=valid, 0=invalid'
+            },
+            'orientation_euler_angles': { 
+                'pitch': 'radians',
+                'roll': 'radians',
+                'valid': '1=valid, 0=invalid',
+                'yaw': 'radians'
+            }
+        }
+    }
+```
