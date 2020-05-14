@@ -9,7 +9,8 @@ IMU_PATH = os.path.join(ROOT_DIR, 'test/mocks/IMU_timestamped_test_data.bin')
 # Path to IMU Raw Data File
 # IMU_PATH = "path to raw data file"
 
-## Path to video file or camera device ID
+## Path to video file or camera device ID (Integer)
+# Example of Device ID: CAPTURE_DEVICE = 0
 # CAPTURE_DEVICE = 0
 CAPTURE_DEVICE = 'MVI_1610_VIS_cut.avi'
 
