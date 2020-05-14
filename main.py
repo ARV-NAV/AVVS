@@ -111,13 +111,12 @@ if __name__ == "__main__":
             # calculate pos
             output = []
             viewport_width = transformed_image.shape[1]  # image x dimension px
-            # image y dimension px
-            viewport_height = transformed_image.shape[0]
+            viewport_height = transformed_image.shape[0] # image y dimension px
             viewport_angle = config.VIEWPORT_ANGLE       # image diagnal px
-            for obj in tracker.objects.items():
-                (objID, centroid) = obj
-                # horizontal center of bounding box
-                centroid_xpos = centroid[0]
+            for item in tracker.objects.items():
+
+                ( objID, obj ) = item
+                centroid_xpos = obj.centroid[0]       # horizontal center of bounding box
 
                 compass_angle = calculate_angle(
                     viewport_width,
@@ -126,9 +125,10 @@ if __name__ == "__main__":
                     centroid_xpos
                 )
 
-                if config.VERBOSE:
+                if (config.VERBOSE):
                     print("objID: " + str(objID) +
-                          ", Centroid_xpos: " + str(centroid_xpos))
+                          ", Centroid_xpos: " + str(centroid_xpos) +
+                          ", size_increase: " + str(obj.size_increase))
 
                 detected_obj = (objID, compass_angle)
                 output.append(detected_obj)
@@ -136,7 +136,7 @@ if __name__ == "__main__":
             # output pos
             print(output)
 
-        else: 
+        else:
             skipped_frames += 1
 
 

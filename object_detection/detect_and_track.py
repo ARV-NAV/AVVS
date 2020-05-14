@@ -4,7 +4,8 @@
 """
 # ================ Built-in Imports ================ #
 
-import datetime
+import time
+#import datetime
 
 # ================ Third Party Imports ================ #
 
@@ -52,10 +53,10 @@ COLORS = np.random.randint(0, 255, size=(len(LABELS), 3),
 
 
 # Define function to process Tensorflow network output
-def process_DNN_output(networkOutput, rows, cols):
+def process_DNN_output(network_output, rows, cols):
     # Loop on the outputs
     rects = []
-    for detection in networkOutput[0,0]:
+    for detection in network_output[0,0]:
         score = float(detection[2])
         if score > 0.5:
             # Subtract 1 since LABEL list is 0 indexed while DNN output is 1 indexed
@@ -65,11 +66,15 @@ def process_DNN_output(networkOutput, rows, cols):
             top = int(detection[4] * rows)
             right = int(detection[5] * cols)
             bottom = int(detection[6] * rows)
-            data = ObjData.objData((left, bottom, right, top),
-                           datetime.datetime.now().strftime("%H:%M:%S.%f"),
+            # Size is a measure of the bounding box area
+            size = (detection[6] - detection[4]) * (detection[5] - detection[3])
+            data = ObjData.ObjData((left, bottom, right, top),
+                           #datetime.datetime.now().strftime("%H:%M:%S.%f"),
+                           time.time(),
                            LABELS[objID],
                            detection[2],
-                           int(COLORS[objID][0]))
+                           int(COLORS[objID][0]),
+                           size)
             # centroid tracker takes format smallerX, smallerY, largerX, largerY
             # and a data object/tuple/structure/etc.
             rects.append([left, bottom, right, top, data])
@@ -94,13 +99,13 @@ def detect_in_image(img, ct):
         swapRB=True, crop=True))
 
     # Runs a forward pass to compute the net output
-    networkOutput = tensorflowNet.forward()
+    network_output = tensorflowNet.forward()
 
     # Get list of objects from tensorflow network output
     rows, cols = img.shape[:2]
-    rects = process_DNN_output(networkOutput, rows, cols)
+    rects = process_DNN_output(network_output, rows, cols)
 
     # Now, update the centroid tracker with the newly found bounding boxes
-    (objects, data) = ct.update(rects)
+    trackedObjs = ct.update(rects)
 
     return len(rects)
