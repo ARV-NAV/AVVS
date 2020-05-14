@@ -6,13 +6,19 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 # Test Path to IMU Raw Data File
 IMU_PATH = os.path.join(ROOT_DIR, 'test/mocks/IMU_timestamped_test_data.bin')
 
-# Path to IMU Raw Data File
+# # Path to IMU Raw Data File
 # IMU_PATH = "path to raw data file"
 
-## Path to video file or camera device ID (Integer)
-# Example of Device ID: CAPTURE_DEVICE = 0
-# CAPTURE_DEVICE = 0
-CAPTURE_DEVICE = 'MVI_1610_VIS_cut.avi'
+# # Create UDEV rules symlink for /dev/video-cam
+# f = open("/etc/udev/rules.d/avvs-cam.rules", "w")
+# f.write('KERNEL=="video[0-9]*", SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTRS{idVendor}=="05a9", ATTRS{idProduct}=="4519", SYMLINK+="video-cam"')
+# f.close()
+
+# # Path to camera device ID using udev rules' symlink
+# CAPTURE_DEVICE = "/dev/video-cam"
+
+# Name of the capture device, which should be viewable from `lsusb`
+DEVICE_NAME = "Logitech, Inc. Webcam C920"
 
 ## How often a frame is processed (seconds)
 FRAME_INTERVAL = 1
