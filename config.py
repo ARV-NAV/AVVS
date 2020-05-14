@@ -30,7 +30,7 @@ CAM_SENSOR_WIDTH = 4.8
 
 # Signals to determine which axis to include for the image manipulation
 USE_ROLL = True
-USE_PITCH = True
+USE_PITCH = False
 USE_YAW = False
 
 # ================ END Image Manipulation Configs ================ #
