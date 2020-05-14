@@ -47,7 +47,7 @@ def getCaptureDevice():
             info = device_re.match(i)
             if info:
                 dinfo = info.groupdict()
-                if "Logitech, Inc. Webcam C920" in dinfo['tag']:
+                if config.DEVICE_NAME in dinfo['tag']:
                     print "Camera found"
                     bus = dinfo['bus']
                     device = dinfo['device']

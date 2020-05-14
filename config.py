@@ -17,6 +17,9 @@ IMU_PATH = os.path.join(ROOT_DIR, 'test/mocks/IMU_timestamped_test_data.bin')
 # # Path to camera device ID using udev rules' symlink
 # CAPTURE_DEVICE = "/dev/video-cam"
 
+# Name of the capture device, which should be viewable from `lsusb`
+DEVICE_NAME = "Logitech, Inc. Webcam C920"
+
 ## How often a frame is processed (seconds)
 FRAME_INTERVAL = 1
 
