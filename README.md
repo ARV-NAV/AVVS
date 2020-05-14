@@ -53,7 +53,7 @@ AVVS is a computer vision system developed for the ROSS (Robotic Oceanographic S
     Windows:   /c/Program\ Files\MATLAB\R2020a
     ```
 
-2) Navigate to the venv.sh file.
+2) Navigate to the AVVS root directory and edit the venv.sh file.
 
     Update the *matlab_root_dir* variable to use the path saved from (1)
 
@@ -119,10 +119,10 @@ Starting the AVVS will begin reading the data file pointed to by IMU_PATH config
 
 ```bash
 # Run the AVVS
-./main.py
+python main.py
 
 # Run the AVVS output to a file
-./main.py > file.txt
+python main.py > file.txt
 ```
 
 To run another file on its own you must use the path to the virtual environment's python script.

@@ -14,7 +14,7 @@ else
 fi
 
 $python -m pip install --upgrade pip
-$python -m pip install -r requirments.txt
+$python -m pip install -r requirements.txt
 
 # Set the matlab_root_dir to the root directory of the system's Matlab installation
 matlab_root_dir=/usr/local/MATLAB/R2018b
