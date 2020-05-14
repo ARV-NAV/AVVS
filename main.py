@@ -9,11 +9,6 @@ import argparse
 import re
 import subprocess
 
-# ================ Third Party Imports ================ #
-
-import cv2 as cv
-from time import sleep, time
-
 # ================ User Imports ================ #
 
 import config
@@ -22,6 +17,11 @@ from classes.object_position_processing import calculate_angle
 from image_manipulation import image_transformation
 from object_detection import detect_and_track
 from object_detection import CentroidTracker
+
+# ================ Third Party Imports ================ #
+
+from time import sleep, time
+import cv2 as cv
 
 # ================ Authorship ================ #
 
