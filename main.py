@@ -5,6 +5,8 @@
 
 import os
 import argparse
+import re
+import subprocess
 
 # ================ Third Party Imports ================ #
 
@@ -32,9 +34,33 @@ __contributors__ = ["Chris Patenaude", "Gabriel Michael", "Gregory Sanchez", "Do
 
 def getArgs():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--env", help="Set enviroment: 'prod', or 'dev' (default)")
+    ap.add_argument("filename", help="Capture video from a file")
     return vars(ap.parse_args())
 
+def getCaptureDevice():
+    device_re = re.compile("Bus\s+(?P<bus>\d+)\s+Device\s+(?P<device>\d+).+ID\s(?P<id>\w+:\w+)\s(?P<tag>.+)$", re.I)
+    df = subprocess.check_output("lsusb", shell=True)
+    for i in df.split('\n'):
+        if i:
+            info = device_re.match(i)
+            if info:
+                dinfo = info.groupdict()
+                if "Logitech, Inc. Webcam C920" in dinfo['tag']:
+                    print "Camera found"
+                    bus = dinfo['bus']
+                    device = dinfo['device']
+                    break
+
+    device_index = None
+    for file in os.listdir("/sys/class/video4linux"):
+        real_file = os.path.realpath("/sys/class/video4linux/" + file)
+        print real_file
+        print "/" + str(bus[-1]) + "-" + str(device[-1]) + "/"
+        if "/" + str(bus[-1]) + "-" + str(device[-1]) + "/" in real_file:
+            device_index = real_file[-1]
+            print "Device index is " + str(device_index)
+
+    return device_index
 
 # ================ Main ================ #
 
@@ -43,11 +69,18 @@ if __name__ == "__main__":
     # Parse Command Line Arguments
     args = getArgs()
 
+    # Obtain camera device id
+    device_id = getCaptureDevice()
+
     # Component initilization
     imu = Imu(config.IMU_PATH)
 
     # Video Frame Streaming
-    cap = cv.VideoCapture(config.CAPTURE_DEVICE)
+    # Default to connected USB camera, otherwise .avi files in top level dir
+    if args.filename:
+        cap = cv.VideoCapture(args.filename)
+    else:
+        cap = cv.VideoCapture(device_id)
 
     # Set up video writer
     # Define the codec and create VideoWriter object
@@ -98,7 +131,7 @@ if __name__ == "__main__":
                 viewport_width,
                 viewport_height,
                 viewport_angle,
-                centroid_xpos 
+                centroid_xpos
             )
 
             if (config.VERBOSE):
