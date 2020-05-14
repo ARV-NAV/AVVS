@@ -1,3 +1,4 @@
+#!./venv/Scripts/python
 """ Description of the main entry point
 """
 
