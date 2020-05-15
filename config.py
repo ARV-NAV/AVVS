@@ -9,18 +9,18 @@ IMU_PATH = os.path.join(ROOT_DIR, 'test/mocks/IMU_timestamped_test_data.bin')
 # Path to IMU Raw Data File
 # IMU_PATH = "path to raw data file"
 
-## Path to video file or camera device ID (Integer)
+# Path to video file or camera device ID (Integer)
 # Example of Device ID: CAPTURE_DEVICE = 0
 # CAPTURE_DEVICE = 0
 CAPTURE_DEVICE = 'MVI_1610_VIS_cut.avi'
 
-## How often a frame is processed (seconds)
+# How often a frame is processed (seconds)
 FRAME_INTERVAL = 1
 
-## Device's viewport angle in degrees
+# Device's viewport angle in degrees
 VIEWPORT_ANGLE = 78
 
-## Output detected objects and bounding boxes
+# Output detected objects and bounding boxes
 DRAW_TO_SCREEN = True
 
 VERBOSE = False
