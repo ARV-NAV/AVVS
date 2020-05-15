@@ -8,7 +8,7 @@ from numpy.testing import assert_allclose
 MOCK_IMU_PATH = os.path.join(ROOT_DIR, 'test/mocks/IMU_timestamped_test_data.bin')
 
 
-class Test_IMU(unittest.TestCase):
+class TestIMU(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

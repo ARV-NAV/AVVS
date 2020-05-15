@@ -2,9 +2,9 @@ import unittest
 from object_detection.CentroidTracker import CentroidTracker
 
 
-class Test_CentroidTracker(unittest.TestCase):
+class TestCentroidTracker(unittest.TestCase):
 
-    #@classmethod
+    # @classmethod
     # def setUpClass(cls):
     #    cls.tracker = CentroidTracker()
 
@@ -12,44 +12,44 @@ class Test_CentroidTracker(unittest.TestCase):
         tracker = CentroidTracker()
         self.assertEqual(len(tracker.objects), tracker.nextObjectID)
 
-        testCentroid = (0,0)
-        testData = None
-        numObjects = 10
+        test_centroid = (0, 0)
+        test_data = None
+        num_objects = 10
 
         # Register 10 objects
-        for i in range(1, numObjects+1):
-            tracker.register(testCentroid, testData)
+        for i in range(1, num_objects + 1):
+            tracker.register(test_centroid, test_data)
             self.assertEqual(tracker.nextObjectID, i)
             self.assertEqual(len(tracker.objects), i)
 
         # Deregister Objects
-        for i in range(0, numObjects):
+        for i in range(0, num_objects):
             tracker.deregister(i)
-            self.assertEqual(len(tracker.objects), numObjects - (i+1))
-            self.assertEqual(tracker.nextObjectID, numObjects)
+            self.assertEqual(len(tracker.objects), num_objects - (i + 1))
+            self.assertEqual(tracker.nextObjectID, num_objects)
 
         self.assertFalse(any(tracker.objects))
 
     def test_update(self):
         # initialize tracker where object can dissapear for at most 1 frame
-        tracker = CentroidTracker(maxDisappeared=1)
+        tracker = CentroidTracker(max_disappeared=1)
 
         # initialize list of new objects to track
-        objsToAdd = []
-        for i in range(0,10):
-            objsToAdd.append((i, i, i+1, i+1, None))
+        objs_to_add = []
+        for i in range(0, 10):
+            objs_to_add.append((i, i, i + 1, i + 1, None))
 
         # update empty CentroidTracker
-        tracker.update(objsToAdd)
+        tracker.update(objs_to_add)
 
         # Assert all objects were added to empty tracker
-        self.assertEqual(len(tracker.objects), len(objsToAdd))
+        self.assertEqual(len(tracker.objects), len(objs_to_add))
 
         # Update with an empty list
         tracker.update([])
 
         # Assert the disappeared count is 1 for all objects
-        for i in range(len(objsToAdd)):
+        for i in range(len(objs_to_add)):
             self.assertEqual(tracker.objects[i].disappeared, 1)
 
         # Update with empty list again

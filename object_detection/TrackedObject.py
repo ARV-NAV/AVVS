@@ -20,7 +20,8 @@ __contributors__ = ["Donald Max Harkins"]
 # Weight for exponential moving average
 ALPHA = 0.15
 
-class TrackedObject():
+
+class TrackedObject:
     def __init__(self, centroid, data):
         self.centroid = centroid
         self.data = [data]
@@ -32,7 +33,7 @@ class TrackedObject():
     # Since true size of the object must be known to calculate the distance to an object (given angular size)
     # we opt to simply report the rate of bounding box increase
     def __update_size_increase(self):
-        if (len(self.data) > 1):
+        if len(self.data) > 1:
             t_elapsed = self.data[-1].timestamp - self.data[-2].timestamp
             # Calculate the rate by calculating the time difference and size increase
             size_increase = self.data[-1].size - self.data[-2].size
@@ -42,7 +43,7 @@ class TrackedObject():
 
             # Calculate the exponential weighted average if there has already been
             # one rate found, otherwise use the first rate found
-            if self.__exponential_rate_average == None:
+            if self.__exponential_rate_average is None:
                 self.__exponential_rate_average = rate
             else:
                 self.__exponential_rate_average = (1 - ALPHA) * self.__exponential_rate_average + ALPHA * rate
@@ -63,14 +64,14 @@ class TrackedObject():
             self.data.append(data)
             self.__update_size_increase()
 
-    def drawObject(self, objID, img):
-        text = "ID {}".format(objID)
+    def draw_object(self, obj_id, img):
+        text = "ID {}".format(obj_id)
         cv2.putText(img, text, (self.centroid[0] - 10, self.centroid[1] - 10),
             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
         cv2.circle(img, (self.centroid[0], self.centroid[1]), 4, (0, 0, 0), -1)
         # If the most recent data we're storing with the object has a draw function,
         # we call it
         try:
-            self.data[-1].drawData(img)
+            self.data[-1].draw_data(img)
         except AttributeError:
             pass
