@@ -106,7 +106,7 @@ if __name__ == "__main__":
             # display on system
             if config.DRAW_TO_SCREEN:
                 # Draw the objects being tracked
-                tracker.drawObjects(transformed_image)
+                tracker.draw_objects(transformed_image)
                 cv.imshow('Tracked Objects', transformed_image)
 
             # calculate pos
