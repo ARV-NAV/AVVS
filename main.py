@@ -20,7 +20,7 @@ from object_detection import CentroidTracker
 
 # ================ Third Party Imports ================ #
 
-from time import time
+from time import sleep, time
 import cv2 as cv
 
 # ================ Authorship ================ #
@@ -28,7 +28,6 @@ import cv2 as cv
 __author__ = "Chris Patenaude"
 __contributors__ = ["Chris Patenaude", "Gabriel Michael",
                     "Gregory Sanchez", "Donald 'Max' Harkins", "Tobias Hodges"]
-
 
 # ================ Global Variables ================ #
 
@@ -38,15 +37,12 @@ __contributors__ = ["Chris Patenaude", "Gabriel Michael",
 def get_args():
     ap = argparse.ArgumentParser()
     ap.add_argument("-f", "--filename", help="Capture video from a file", dest="filename")
-    return ap.parse_args()
-
+    return vars(ap.parse_args())
 
 # Get the index of the camera using `lsusb`
 def get_capture_device():
-    bus = 0
-    device = 0
     # regex for finding bus and device ids
-    device_re = re.compile(r"Bus\s+(?P<bus>\d+)\s+Device\s+(?P<device>\d+).+ID\s(?P<id>\w+:\w+)\s(?P<tag>.+)$", re.I)
+    device_re = re.compile("Bus\s+(?P<bus>\d+)\s+Device\s+(?P<device>\d+).+ID\s(?P<id>\w+:\w+)\s(?P<tag>.+)$", re.I)
     # check the output of lsusb for a matching regex
     df = subprocess.check_output("lsusb", shell=True)
     # loop through each line of lsusb output
@@ -79,7 +75,6 @@ def get_capture_device():
 
     return device_index
 
-
 # ================ Main ================ #
 
 if __name__ == "__main__":
@@ -88,7 +83,7 @@ if __name__ == "__main__":
     args = get_args()
 
     # Obtain camera device id
-    device_id = 'MVI_1610_VIS_cut.avi'  # get_capture_device()
+    device_id = get_capture_device()
     if device_id is None:
         raise TypeError
 
@@ -155,20 +150,20 @@ if __name__ == "__main__":
             detect_and_track.detect_in_image(transformed_image, tracker)
 
             # display on system
-            if config.DRAW_TO_SCREEN:
+            if (config.DRAW_TO_SCREEN):
                 # Draw the objects being tracked
-                tracker.draw_objects(transformed_image)
+                tracker.drawObjects(transformed_image)
                 cv.imshow('Tracked Objects', transformed_image)
 
             # calculate pos
             output = []
             viewport_width = transformed_image.shape[1]  # image x dimension px
-            viewport_height = transformed_image.shape[0]  # image y dimension px
-            viewport_angle = config.VIEWPORT_ANGLE  # image diagnal px
+            viewport_height = transformed_image.shape[0] # image y dimension px
+            viewport_angle = config.VIEWPORT_ANGLE       # image diagnal px
             for item in tracker.objects.items():
 
-                (objID, obj) = item
-                centroid_xpos = obj.centroid[0]  # horizontal center of bounding box
+                ( objID, obj ) = item
+                centroid_xpos = obj.centroid[0]       # horizontal center of bounding box
 
                 compass_angle = calculate_angle(
                     viewport_width,
@@ -177,7 +172,7 @@ if __name__ == "__main__":
                     centroid_xpos
                 )
 
-                if config.VERBOSE:
+                if (config.VERBOSE):
                     print("objID: " + str(objID) +
                           ", Centroid_xpos: " + str(centroid_xpos) +
                           ", size_increase: " + str(obj.size_increase))
@@ -190,6 +185,7 @@ if __name__ == "__main__":
 
         else:
             skipped_frames += 1
+
 
     # Clean up
     cap.release()

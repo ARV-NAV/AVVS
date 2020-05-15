@@ -53,7 +53,7 @@ AVVS is a computer vision system developed for the ROSS (Robotic Oceanographic S
     Windows:   /c/Program\ Files\MATLAB\R2020a
     ```
 
-2) Navigate to the AVVS root directory and edit the ```venv.sh``` file.
+2) Navigate to the AVVS root directory and edit the venv.sh file.
 
     Update the *matlab_root_dir* variable to use the path saved from (1)
 
@@ -62,14 +62,19 @@ AVVS is a computer vision system developed for the ROSS (Robotic Oceanographic S
         This path has not been created yet, and it will be installed where the repository was cloned. (E.g. git cloned to /test/AVVS; venv will be in /test/AVVS/venv)
         For Windows the path must be in Windows format (i.e. "C:\test\AVVS\venv" instead of "/c/test/AVVS/venv").
 
-4) Update the ```venv.sh``` file variable to use ```python3``` and ```pip3```
+3) Make sure virtualenv is installed
+
+    ```bash
+   $ pip install virtualenv
+    ```
+
+4) Update the venv.sh file variable to use python3
 
     ```bash
    python=python3 
-   pip=pip3
    ```
 
-5) In your bash terminal. Navigate to the AVVS directory, update the ```venv.sh``` to be an executable and run the ```venv.sh``` file
+5) In your bash terminal. Navigate to the AVVS directory, update the venv.sh to be an executable and run the venv.sh file
 
     ```bash
    # Example command
@@ -82,21 +87,13 @@ AVVS is a computer vision system developed for the ROSS (Robotic Oceanographic S
    Note: matlab is only installed into the virtual environment and is not available outside of it.
    To use matlab outside the virtual environment follow this [guide](https://www.mathworks.com/help/matlab/matlab_external/install-the-matlab-engine-for-python.html).
 
-6) Navigate to the ```main.py``` file.
+6) Navigate to the main.py file.
 
     Update the shebang to include the path to your virtual environment.
     ```bash
+
    Linux/Mac : #!./venv/bin/python
    Windows   : #!./venv/Scripts/python
-    ```
-   
-7) Update the ```main.py``` to be an executable.
-
-    ```bash
-   # Example command
-   $ pwd
-   /test/AVVS
-   $ chmod +x ./main.py
     ```
 
 ## Configuration
@@ -122,10 +119,10 @@ Starting the AVVS will begin reading the data file pointed to by IMU_PATH config
 
 ```bash
 # Run the AVVS
-./main.py
+python main.py
 
 # Run the AVVS output to a file
-./main.py > file.txt
+python main.py > file.txt
 ```
 
 To run another file on its own you must use the path to the virtual environment's python script.

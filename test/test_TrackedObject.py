@@ -3,14 +3,15 @@ from object_detection.TrackedObject import TrackedObject
 from object_detection.ObjData import ObjData
 
 
-class TestTrackedObject(unittest.TestCase):
+class Test_TrackedObject(unittest.TestCase):
+
 
     def test_update_new_apperance(self):
-        center = (1, 1)
+        center = (1,1)
         size = 0.2
         time = 1
 
-        obj = TrackedObject(center, ObjData((0, 0, 2, 2), time, "Boat", 0.99, 255, size))
+        obj = TrackedObject(center, ObjData((0,0,2,2), time, "Boat", 0.99, 255, size))
 
         # Assert that upon initialization, tracker obj has a centroid but no doubling_time
         # and has not been marked as disappeared
@@ -18,11 +19,11 @@ class TestTrackedObject(unittest.TestCase):
         self.assertEqual(obj.size_increase, None)
         self.assertEqual(obj.disappeared, 0)
 
-        new_center = (2, 2)
+        new_center = (2,2)
         new_size = 0.4
         new_time = 2
 
-        obj.update(centroid=new_center, data=ObjData((0, 0, 4, 4), new_time, "Boat", 0.99, 255, new_size))
+        obj.update(centroid=new_center, data=ObjData((0,0,4,4), new_time, "Boat", 0.99, 255, new_size))
 
         # Assert that the center has been updated, our boat has a positive value for halving time
         # since the angular size is increasing
@@ -30,12 +31,13 @@ class TestTrackedObject(unittest.TestCase):
         self.assertGreater(obj.size_increase, 0)
         self.assertEqual(obj.disappeared, 0)
 
+
     def test_update_disappeared_true(self):
-        center = (1, 1)
+        center = (1,1)
         size = 0.2
         time = 1
 
-        obj = TrackedObject(center, ObjData((0, 0, 2, 2), time, "Boat", 0.99, 255, size))
+        obj = TrackedObject(center, ObjData((0,0,2,2), time, "Boat", 0.99, 255, size))
 
         obj.update(disappeared=True)
 
@@ -44,12 +46,13 @@ class TestTrackedObject(unittest.TestCase):
         self.assertEqual(obj.disappeared, 1)
         self.assertEqual(len(obj.data), 1)
 
+
     def test_update_no_params(self):
-        center = (1, 1)
+        center = (1,1)
         size = 0.2
         time = 1
 
-        obj = TrackedObject(center, ObjData((0, 0, 2, 2), time, "Boat", 0.99, 255, size))
+        obj = TrackedObject(center, ObjData((0,0,2,2), time, "Boat", 0.99, 255, size))
 
         # Record old state
         old_centroid = obj.centroid

@@ -14,11 +14,9 @@ import cv2 as cv2
 __author__ = "Donald Max Harkins"
 __contributors__ = ["Donald Max Harkins"]
 
-
 # ================ Class defenition ================ #
 
-
-class ObjData:
+class ObjData():
     def __init__(self, rect, timestamp, label, confidence, color, size):
         self.rect = rect
         self.timestamp = timestamp
@@ -28,12 +26,12 @@ class ObjData:
         # Sixe is a measure of bounding box width as a fraction of the image width
         self.size = size
 
-    def draw_data(self, img):
-        # draw a coloured rectangle around object.
-        # rectangle did not play nice with numpy array, hence manual casting
-        # Draw some text too
-        (startX, startY, endX, endY) = self.rect
-        text = "{} | {:.4f} | {}".format(self.label, self.confidence, self.timestamp)
-        cv2.putText(img, text, (startX, startY - 5),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.color, 2)
-        cv2.rectangle(img, (startX, startY), (endX, endY), self.color, thickness=2)
+    def drawData(self, img):
+         #draw a coloured rectangle around object.
+         # rectangle did not play nice with numpy array, hence manual casting
+         # Draw some text too
+         (startX, startY, endX, endY) = self.rect
+         text = "{} | {:.4f} | {}".format(self.label, self.confidence, self.timestamp)
+         cv2.putText(img, text, (startX, startY - 5),
+             cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.color, 2)
+         cv2.rectangle(img, (startX, startY), (endX, endY), self.color, thickness=2)
