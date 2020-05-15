@@ -34,13 +34,13 @@ __contributors__ = ["Chris Patenaude", "Gabriel Michael",
 # ================ Functions ================ #
 
 # When using a file for input, use the `--filename` of `-f` argument
-def getArgs():
+def get_args():
     ap = argparse.ArgumentParser()
     ap.add_argument("-f", "--filename", help="Capture video from a file", dest="filename")
     return vars(ap.parse_args())
 
 # Get the index of the camera using `lsusb`
-def getCaptureDevice():
+def get_capture_device():
     # regex for finding bus and device ids
     device_re = re.compile("Bus\s+(?P<bus>\d+)\s+Device\s+(?P<device>\d+).+ID\s(?P<id>\w+:\w+)\s(?P<tag>.+)$", re.I)
     # check the output of lsusb for a matching regex
@@ -80,10 +80,10 @@ def getCaptureDevice():
 if __name__ == "__main__":
 
     # Parse Command Line Arguments
-    args = getArgs()
+    args = get_args()
 
     # Obtain camera device id
-    device_id = getCaptureDevice()
+    device_id = get_capture_device()
     if device_id is None:
         raise TypeError
 
