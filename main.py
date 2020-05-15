@@ -36,8 +36,7 @@ __contributors__ = ["Chris Patenaude", "Gabriel Michael",
 # When using a file for input, use the `--filename` of `-f` argument
 def getArgs():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--filename", help="Capture video from a file", dest="filename")
-    ap.add_argument("-f", help="Capture video from a file", dest="filename")
+    ap.add_argument("-f", "--filename", help="Capture video from a file", dest="filename")
     return vars(ap.parse_args())
 
 # Get the index of the camera using `lsusb`
