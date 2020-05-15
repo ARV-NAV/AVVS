@@ -27,13 +27,13 @@ import cv2 as cv
 
 __author__ = "Chris Patenaude"
 __contributors__ = ["Chris Patenaude", "Gabriel Michael",
-                    "Gregory Sanchez", "Donald 'Max' Harkens", "Tobias Hodges"]
+                    "Gregory Sanchez", "Donald 'Max' Harkins", "Tobias Hodges"]
 
 # ================ Global Variables ================ #
 
 # ================ Functions ================ #
 
-# When using a file for input, use the `filename` argument
+# When using a file for input, use the `--filename` of `-f` argument
 def getArgs():
     ap = argparse.ArgumentParser()
     ap.add_argument("--filename", help="Capture video from a file", dest="filename")
@@ -47,7 +47,7 @@ def getCaptureDevice():
     # check the output of lsusb for a matching regex
     df = subprocess.check_output("lsusb", shell=True)
     # loop through each line of lsusb output
-    for i in df.split('\n'):
+    for i in df.split(bytes('\n')):
         if i:
             info = device_re.match(i)
             if info:
