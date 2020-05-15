@@ -1,4 +1,4 @@
-#!./venv/Scripts/python
+#!./venv/bin/python
 """ Description of the main entry point
 """
 
@@ -94,7 +94,7 @@ if __name__ == "__main__":
             last_processed_at = time()
 
             # get attitude if valid image
-            attitude = imu.get_last_valid_orientation()
+            attitude = imu.get_last_orientation()
 
             # Transform image
             transformed_image = image_transformation.rotate_image(
