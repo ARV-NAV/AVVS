@@ -117,12 +117,14 @@ ls /dev/video*
 ## Usage
 Starting the AVVS will begin reading the data file pointed to by IMU_PATH config variable and output positional data on detected objects to stdout. If the DRAW_TO_SCREEN configuration variable is set, a processed image will be generated containing a orientation corrected view port with bounding boxes around detected objects.
 
+*Note: If you are unable to run main.py as an executable, use: ```chmod +x main.py```*
+
 ```bash
 # Run the AVVS
-python main.py
+./main.py
 
 # Run the AVVS output to a file
-python main.py > file.txt
+./main.py > file.txt
 ```
 
 To run another file on its own you must use the path to the virtual environment's python script.
