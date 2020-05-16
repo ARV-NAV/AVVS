@@ -4,13 +4,12 @@
 
 # ================ Built-in Imports ================ #
 
-import os
 import argparse
 
 # ================ Third Party Imports ================ #
 
 import cv2 as cv
-from time import sleep, time
+from time import time
 
 # ================ User Imports ================ #
 
@@ -27,12 +26,13 @@ __author__ = "Chris Patenaude"
 __contributors__ = ["Chris Patenaude", "Gabriel Michael",
                     "Gregory Sanchez", "Donald 'Max' Harkens", "Tobias Hodges"]
 
+
 # ================ Global Variables ================ #
 
 # ================ Functions ================ #
 
 
-def getArgs():
+def get_args():
     ap = argparse.ArgumentParser()
     ap.add_argument("--env", help="Set enviroment: 'prod', or 'dev' (default)")
     return vars(ap.parse_args())
@@ -43,7 +43,7 @@ def getArgs():
 if __name__ == "__main__":
 
     # Parse Command Line Arguments
-    args = getArgs()
+    args = get_args()
 
     # Component initilization
     imu = Imu(config.IMU_PATH)
@@ -104,20 +104,20 @@ if __name__ == "__main__":
             detect_and_track.detect_in_image(transformed_image, tracker)
 
             # display on system
-            if (config.DRAW_TO_SCREEN):
+            if config.DRAW_TO_SCREEN:
                 # Draw the objects being tracked
-                tracker.drawObjects(transformed_image)
+                tracker.draw_objects(transformed_image)
                 cv.imshow('Tracked Objects', transformed_image)
 
             # calculate pos
             output = []
             viewport_width = transformed_image.shape[1]  # image x dimension px
-            viewport_height = transformed_image.shape[0] # image y dimension px
-            viewport_angle = config.VIEWPORT_ANGLE       # image diagnal px
+            viewport_height = transformed_image.shape[0]  # image y dimension px
+            viewport_angle = config.VIEWPORT_ANGLE  # image diagnal px
             for item in tracker.objects.items():
 
-                ( objID, obj ) = item
-                centroid_xpos = obj.centroid[0]       # horizontal center of bounding box
+                (objID, obj) = item
+                centroid_xpos = obj.centroid[0]  # horizontal center of bounding box
 
                 compass_angle = calculate_angle(
                     viewport_width,
@@ -126,7 +126,7 @@ if __name__ == "__main__":
                     centroid_xpos
                 )
 
-                if (config.VERBOSE):
+                if config.VERBOSE:
                     print("objID: " + str(objID) +
                           ", Centroid_xpos: " + str(centroid_xpos) +
                           ", size_increase: " + str(obj.size_increase))
@@ -139,7 +139,6 @@ if __name__ == "__main__":
 
         else:
             skipped_frames += 1
-
 
     # Clean up
     cap.release()

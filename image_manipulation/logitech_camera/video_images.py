@@ -21,7 +21,7 @@ except OSError:
 # frame
 currentframe = 0
 
-while (True):
+while True:
 
     # reading from frame
     ret, frame = cam.read()
