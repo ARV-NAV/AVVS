@@ -1,5 +1,5 @@
 opencv-python==4.2.0.34
-numpy==1.18.1
+numpy==1.22.0
 scipy==1.4.1
 scikit-image==0.16.2
 imutils==0.5.3
